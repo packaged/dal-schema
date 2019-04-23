@@ -1,0 +1,24 @@
+{
+  "name": "packaged/dal-schema",
+  "description": "Data Access Layer : Schema Manager",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Brooke Bryan",
+      "email": "brooke@bajb.net"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "packaged/enum": "~1",
+    "packaged/dal": "~1.7"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Packaged\\DalSchema\\": "src",
+      "Packaged\\Tests\\DalSchema\\": "tests"
+    }
+  }
+}
