@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
-use Packaged\DalSchema\Schema\AbstractColumn;
+use Packaged\DalSchema\Abstracts\AbstractColumn;
 
 class MySQLColumn extends AbstractColumn
 {

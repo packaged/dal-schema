@@ -1,10 +1,10 @@
 <?php
 namespace Packaged\DalSchema\Databases\Cassandra;
 
+use Packaged\DalSchema\Database;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
 use Packaged\DalSchema\Databases\Mysql\MySQLIndex;
-use Packaged\DalSchema\Schema\AbstractTable;
-use Packaged\DalSchema\Schema\Database;
+use Packaged\DalSchema\Abstracts\AbstractTable;
 use Packaged\Helpers\Arrays;
 
 class CassandraTable extends AbstractTable

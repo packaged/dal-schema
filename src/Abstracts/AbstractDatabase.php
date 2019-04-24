@@ -1,5 +1,7 @@
 <?php
-namespace Packaged\DalSchema\Schema;
+namespace Packaged\DalSchema\Abstracts;
+
+use Packaged\DalSchema\Database;
 
 abstract class AbstractDatabase implements Database
 {

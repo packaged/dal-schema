@@ -1,5 +1,5 @@
 <?php
-namespace Packaged\DalSchema\Schema;
+namespace Packaged\DalSchema;
 
 interface Column
 {

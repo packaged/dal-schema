@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Databases\Cassandra;
 
-use Packaged\DalSchema\Schema\AbstractColumn;
+use Packaged\DalSchema\Abstracts\AbstractColumn;
 
 class CassandraColumn extends AbstractColumn
 {

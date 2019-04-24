@@ -1,5 +1,7 @@
 <?php
-namespace Packaged\DalSchema\Schema;
+namespace Packaged\DalSchema\Abstracts;
+
+use Packaged\DalSchema\Column;
 
 abstract class AbstractColumn implements Column
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Databases\Cassandra;
 
-use Packaged\DalSchema\Schema\Index;
+use Packaged\DalSchema\Index;
 use Packaged\Helpers\Arrays;
 
 class CassandraIndex implements Index

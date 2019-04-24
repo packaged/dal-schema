@@ -1,5 +1,7 @@
 <?php
-namespace Packaged\DalSchema\Schema;
+namespace Packaged\DalSchema\Abstracts;
+
+use Packaged\DalSchema\Table;
 
 abstract class AbstractTable implements Table
 {

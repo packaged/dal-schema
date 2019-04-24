@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
-use Packaged\DalSchema\Schema\AbstractDatabase;
+use Packaged\DalSchema\Abstracts\AbstractDatabase;
 
 class MySQLDatabase extends AbstractDatabase
 {

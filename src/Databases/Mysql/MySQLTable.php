@@ -1,8 +1,8 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
-use Packaged\DalSchema\Schema\AbstractTable;
-use Packaged\DalSchema\Schema\Database;
+use Packaged\DalSchema\Database;
+use Packaged\DalSchema\Abstracts\AbstractTable;
 use Packaged\Helpers\Arrays;
 
 class MySQLTable extends AbstractTable

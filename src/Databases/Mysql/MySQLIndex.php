@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
-use Packaged\DalSchema\Schema\Index;
+use Packaged\DalSchema\Index;
 use Packaged\Helpers\Arrays;
 
 class MySQLIndex implements Index

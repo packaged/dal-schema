@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Databases\Cassandra;
 
-use Packaged\DalSchema\Schema\AbstractDatabase;
+use Packaged\DalSchema\Abstracts\AbstractDatabase;
 
 class CassandraKeyspace extends AbstractDatabase
 {
