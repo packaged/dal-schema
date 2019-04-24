@@ -10,8 +10,8 @@
   ],
   "require": {
     "php": ">=7.2",
-    "packaged/enum": "~1",
-    "packaged/dal": "~1.7"
+    "packaged/enum": "^1.1",
+    "packaged/dal": "^1.7"
   },
   "require-dev": {
   },

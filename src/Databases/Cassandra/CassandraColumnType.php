@@ -1,5 +1,5 @@
 <?php
-namespace Packaged\DalSchema\Engines\Cassandra;
+namespace Packaged\DalSchema\Databases\Cassandra;
 
 use Packaged\Enum\AbstractEnum;
 

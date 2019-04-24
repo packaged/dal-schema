@@ -1,11 +1,11 @@
 <?php
 namespace Packaged\DalSchema;
 
-use Packaged\DalSchema\Engines\SchemaEngine;
+use Packaged\DalSchema\Databases\SchemaDatabase;
 
 interface Schema
 {
-  public function getEngine(): SchemaEngine;
+  public function getEngine(): SchemaDatabase;
 
   /**
    * @return string Database Name

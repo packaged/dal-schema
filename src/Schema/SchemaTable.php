@@ -1,15 +1,15 @@
 <?php
 namespace Packaged\DalSchema\Schema;
 
-use Packaged\DalSchema\Engines\SchemaEngine;
+use Packaged\DalSchema\Databases\SchemaDatabase;
 
 interface SchemaTable
 {
-  public function getEngine(): SchemaEngine;
+  public function getDatabase(): SchemaDatabase;
 
   public function getName(): string;
 
-  public function getComment(): ?string;
+  public function getDescription(): ?string;
 
   /**
    * @return SchemaColumn[]
@@ -17,12 +17,7 @@ interface SchemaTable
   public function getColumns(): array;
 
   /**
-   * @return SchemaKey[]
-   */
-  public function getKeys(): array;
-
-  /**
    * @return SchemaIndex[]
    */
-  public function getIndices(): array;
+  public function getIndexes(): array;
 }
