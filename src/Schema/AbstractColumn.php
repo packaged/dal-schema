@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Schema;
 
-abstract class AbstractColumn implements SchemaColumn
+abstract class AbstractColumn implements Column
 {
   private $_name;
 

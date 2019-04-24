@@ -1,9 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Schema;
 
-interface SchemaIndex
+interface Column
 {
   public function getName(): string;
-
-  public function getColumns(): array;
 }

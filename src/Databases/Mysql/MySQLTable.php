@@ -1,8 +1,8 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
-use Packaged\DalSchema\Databases\SchemaDatabase;
 use Packaged\DalSchema\Schema\AbstractTable;
+use Packaged\DalSchema\Schema\Database;
 use Packaged\Helpers\Arrays;
 
 class MySQLTable extends AbstractTable
@@ -30,7 +30,7 @@ class MySQLTable extends AbstractTable
     $this->_indexes = Arrays::instancesOf($indexes, MySQLIndex::class);
   }
 
-  public function getDatabase(): SchemaDatabase
+  public function getDatabase(): Database
   {
     return new MySQLDatabase();
   }

@@ -3,8 +3,7 @@ namespace Packaged\DalSchema\Databases\Cassandra;
 
 use Packaged\DalSchema\Schema\AbstractDatabase;
 
-class CassandraDatabase extends AbstractDatabase
-
+class CassandraKeyspace extends AbstractDatabase
 {
 
 }

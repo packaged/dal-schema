@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Schema;
 
-abstract class AbstractTable implements SchemaTable
+abstract class AbstractTable implements Table
 {
   protected $_name;
   protected $_description;

@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Schema;
 
-interface SchemaColumn
+interface Database
 {
   public function getName(): string;
 }

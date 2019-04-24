@@ -1,9 +1,7 @@
 <?php
 namespace Packaged\DalSchema\Schema;
 
-use Packaged\DalSchema\Databases\SchemaDatabase;
-
-abstract class AbstractDatabase implements SchemaDatabase
+abstract class AbstractDatabase implements Database
 {
   protected $_name;
 

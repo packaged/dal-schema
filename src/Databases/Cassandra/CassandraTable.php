@@ -2,10 +2,9 @@
 namespace Packaged\DalSchema\Databases\Cassandra;
 
 use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
-use Packaged\DalSchema\Databases\Mysql\MySQLEngine;
 use Packaged\DalSchema\Databases\Mysql\MySQLIndex;
-use Packaged\DalSchema\Databases\SchemaDatabase;
 use Packaged\DalSchema\Schema\AbstractTable;
+use Packaged\DalSchema\Schema\Database;
 use Packaged\Helpers\Arrays;
 
 class CassandraTable extends AbstractTable
@@ -17,24 +16,21 @@ class CassandraTable extends AbstractTable
   /**
    * MySQLTable constructor.
    *
-   * @param string           $name
-   * @param string           $description
-   * @param MySQLColumn[]    $columns
-   * @param MySQLIndex[]     $indexes
-   * @param MySQLEngine|null $engine
+   * @param string        $name
+   * @param string        $description
+   * @param MySQLColumn[] $columns
+   * @param MySQLIndex[]  $indexes
    */
-  public function __construct(
-    string $name, string $description = '', array $columns = [], array $indexes = [], MySQLEngine $engine = null
-  )
+  public function __construct(string $name, string $description = '', array $columns = [], array $indexes = [])
   {
     parent::__construct($name, $description);
     $this->_columns = Arrays::instancesOf($columns, CassandraColumn::class);
     $this->_indexes = Arrays::instancesOf($indexes, CassandraIndex::class);
   }
 
-  public function getDatabase(): SchemaDatabase
+  public function getDatabase(): Database
   {
-    return new CassandraDatabase();
+    return new CassandraKeyspace();
   }
 
   /**

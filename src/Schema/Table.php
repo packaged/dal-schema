@@ -1,23 +1,21 @@
 <?php
 namespace Packaged\DalSchema\Schema;
 
-use Packaged\DalSchema\Databases\SchemaDatabase;
-
-interface SchemaTable
+interface Table
 {
-  public function getDatabase(): SchemaDatabase;
+  public function getDatabase(): Database;
 
   public function getName(): string;
 
   public function getDescription(): ?string;
 
   /**
-   * @return SchemaColumn[]
+   * @return Column[]
    */
   public function getColumns(): array;
 
   /**
-   * @return SchemaIndex[]
+   * @return Index[]
    */
   public function getIndexes(): array;
 }

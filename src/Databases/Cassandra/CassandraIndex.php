@@ -1,10 +1,10 @@
 <?php
 namespace Packaged\DalSchema\Databases\Cassandra;
 
-use Packaged\DalSchema\Schema\SchemaIndex;
+use Packaged\DalSchema\Schema\Index;
 use Packaged\Helpers\Arrays;
 
-class CassandraIndex implements SchemaIndex
+class CassandraIndex implements Index
 {
   protected $_name;
   protected $_type;

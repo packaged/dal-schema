@@ -1,10 +1,10 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
-use Packaged\DalSchema\Schema\SchemaIndex;
+use Packaged\DalSchema\Schema\Index;
 use Packaged\Helpers\Arrays;
 
-class MySQLIndex implements SchemaIndex
+class MySQLIndex implements Index
 {
   protected $_name;
   protected $_type;
