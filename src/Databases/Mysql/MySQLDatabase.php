@@ -9,7 +9,7 @@ class MySQLDatabase extends AbstractDatabase
   protected $_collation;
 
   public function __construct(
-    string $name = '', MySQLCharacterSet $characterSet = null, MySQLCollation $collation = null
+    string $name, MySQLCharacterSet $characterSet = null, MySQLCollation $collation = null
   )
   {
     parent::__construct($name);

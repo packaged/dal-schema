@@ -7,7 +7,7 @@ abstract class AbstractDatabase implements Database
 {
   protected $_name;
 
-  public function __construct(string $name = '')
+  public function __construct(string $name)
   {
     $this->_name = $name;
   }

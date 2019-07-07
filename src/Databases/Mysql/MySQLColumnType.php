@@ -31,6 +31,7 @@ class MySQLColumnType extends AbstractEnum
   const MEDIUM_INT_SIGNED = 'mediumint';
   const AMOUNT = 'amount';
   const DECIMAL = 'decimal';
+  const DECIMAL_UNSIGNED = 'decimalunsigned';
   const BLOB = 'blob';
   const LONGBLOB = 'longblob';
   const MONEY = 'money';
@@ -86,6 +87,7 @@ class MySQLColumnType extends AbstractEnum
     {
       case self::AMOUNT:
       case self::DECIMAL:
+      case self::DECIMAL_UNSIGNED:
         return [10, 2];
       case self::BIG_INT:
       case self::BIG_INT_UNSIGNED:
@@ -130,6 +132,25 @@ class MySQLColumnType extends AbstractEnum
       case self::MEDIUMTEXT_MB4:
       case self::LONGTEXT_MB4:
         return new MySQLCollation(MySQLCollation::UTF8MB4_UNICODE_CI);
+    }
+    return null;
+  }
+
+  public function defaultCharacterSet(): ?MySQLCharacterSet
+  {
+    switch($this->getValue())
+    {
+      case self::FID:
+      case self::VARCHAR:
+      case self::TEXT:
+      case self::MEDIUMTEXT:
+      case self::LONGTEXT:
+        return new MySQLCharacterSet(MySQLCharacterSet::UTF8);
+      case self::VARCHAR_MB4:
+      case self::TEXT_MB4:
+      case self::MEDIUMTEXT_MB4:
+      case self::LONGTEXT_MB4:
+        return new MySQLCharacterSet(MySQLCharacterSet::UTF8MB4);
     }
     return null;
   }

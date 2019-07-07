@@ -10,10 +10,11 @@
   ],
   "require": {
     "php": ">=7.2",
-    "packaged/enum": "^1.1",
-    "packaged/dal": "^1.7"
+    "packaged/enum": "^1.2",
+    "packaged/dal": "^1.8"
   },
   "require-dev": {
+    "phpunit/phpunit": "^8.2"
   },
   "autoload": {
     "psr-4": {

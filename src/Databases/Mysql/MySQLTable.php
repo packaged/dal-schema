@@ -1,12 +1,13 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
-use Packaged\DalSchema\Database;
 use Packaged\DalSchema\Abstracts\AbstractTable;
+use Packaged\DalSchema\Database;
 use Packaged\Helpers\Arrays;
 
 class MySQLTable extends AbstractTable
 {
+  protected $_collation;
   protected $_engine;
   protected $_columns;
   protected $_indexes;
@@ -14,25 +15,30 @@ class MySQLTable extends AbstractTable
   /**
    * MySQLTable constructor.
    *
+   * @param Database         $database
    * @param string           $name
    * @param string           $description
    * @param MySQLColumn[]    $columns
    * @param MySQLIndex[]     $indexes
+   * @param string|null      $collation
    * @param MySQLEngine|null $engine
    */
   public function __construct(
-    string $name, string $description = '', array $columns = [], array $indexes = [], MySQLEngine $engine = null
+    Database $database,
+    string $name, string $description = '', array $columns = [], array $indexes = [], string $collation = null,
+    MySQLEngine $engine = null
   )
   {
-    parent::__construct($name, $description);
+    parent::__construct($database, $name, $description);
+    $this->_collation = $collation;
     $this->_engine = $engine ?: new MySQLEngine(MySQLEngine::INNODB);
     $this->_columns = Arrays::instancesOf($columns, MySQLColumn::class);
     $this->_indexes = Arrays::instancesOf($indexes, MySQLIndex::class);
   }
 
-  public function getDatabase(): Database
+  public function getCollation(): ?string
   {
-    return new MySQLDatabase();
+    return $this->_collation;
   }
 
   public function getEngine(): ?MySQLEngine

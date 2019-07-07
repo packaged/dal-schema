@@ -11,11 +11,13 @@ class MySQLColumn extends AbstractColumn
   protected $_isNullable = false;
   protected $_defaultValue = null;
   protected $_extra;
+  protected $_characterSet;
   protected $_collation;
   protected $_signed;
 
   public function __construct(
-    string $name, MySQLColumnType $type, int $size = null, bool $nullable = false, $default = null, $extra = null,
+    string $name, MySQLColumnType $type, $size = null, bool $nullable = false, $default = null, $extra = null,
+    MySQLCharacterSet $characterSet = null,
     MySQLCollation $collation = null
   )
   {
@@ -27,6 +29,7 @@ class MySQLColumn extends AbstractColumn
     }
     $this->setSigned($type->isSigned());
     $this->setSize($size ?: $type->defaultSize());
+    $this->setCharacterSet($characterSet ?: $type->defaultCharacterSet());
     $this->setCollation($collation ?: $type->defaultCollation());
     $this->setNullable($nullable);
     $this->setDefaultValue($default);
@@ -127,9 +130,28 @@ class MySQLColumn extends AbstractColumn
    *
    * @return $this
    */
-  public function setExtra(string $extra)
+  public function setExtra(?string $extra)
   {
     $this->_extra = $extra;
+    return $this;
+  }
+
+  /**
+   * @return MySQLCharacterSet|null
+   */
+  public function getCharacterSet(): ?MySQLCharacterSet
+  {
+    return $this->_characterSet;
+  }
+
+  /**
+   * @param MySQLCharacterSet $characterSet
+   *
+   * @return $this
+   */
+  public function setCharacterSet(MySQLCharacterSet $characterSet = null)
+  {
+    $this->_characterSet = $characterSet;
     return $this;
   }
 
