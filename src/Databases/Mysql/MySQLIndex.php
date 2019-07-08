@@ -31,4 +31,14 @@ class MySQLIndex implements Index
   {
     return $this->_type;
   }
+
+  public function writerCreate(): string
+  {
+    // TODO: Implement writerCreate() method.
+  }
+
+  public function writerAlter(): string
+  {
+    // TODO: Implement writerAlter() method.
+  }
 }

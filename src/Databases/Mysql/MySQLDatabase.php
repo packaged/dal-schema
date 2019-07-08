@@ -26,4 +26,16 @@ class MySQLDatabase extends AbstractDatabase
   {
     return $this->_collation;
   }
+
+  public function writerCreate(): string
+  {
+    // TODO: Implement writerCreate() method.
+    return '';
+  }
+
+  public function writerAlter(): string
+  {
+    // TODO: Implement writerAlter() method.
+    return '';
+  }
 }

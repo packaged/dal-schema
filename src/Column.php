@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema;
 
-interface Column
+interface Column extends Writer
 {
   public function getName(): string;
 }

@@ -16,6 +16,7 @@ class MigrateTest extends TestCase
   public function testMigration()
   {
     $conn = new MySQLiConnection();
+    //todo: why do we need to set this?
     $conn->setResolver(new DalResolver());
 
     $parser = new MySQLParser($conn);
@@ -47,6 +48,8 @@ class MigrateTest extends TestCase
         new MySQLColumn('field2', new MySQLColumnType(MySQLColumnType::TINY_INT_UNSIGNED)),
       ]
     );
+
+    $this->assertEquals('', $table->writerCreate());
 
     // parse again, and check equal
     $table = $parser->parseTable('test_db', 'test_table');

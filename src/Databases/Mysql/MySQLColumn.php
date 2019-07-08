@@ -192,4 +192,22 @@ class MySQLColumn extends AbstractColumn
     $this->_signed = $signed;
     return $this;
   }
+
+  public function writerCreate(): string
+  {
+    // TODO: Implement writerCreate() method.
+    $definition = [$this->getName(), $this->getType()];
+    $size = $this->getSize();
+    if($size)
+    {
+      $definition[] = '(' . implode(',', $size) . ')';
+    }
+    return join(' ', $definition);
+  }
+
+  public function writerAlter(): string
+  {
+    // TODO: Implement writerAlter() method.
+  }
+
 }

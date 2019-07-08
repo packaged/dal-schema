@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema;
 
-interface Database
+interface Database extends Writer
 {
   public function getName(): string;
 }

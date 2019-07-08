@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\DalSchema;
 
-interface Index
+interface Index extends Writer
 {
   public function getName(): string;
 
