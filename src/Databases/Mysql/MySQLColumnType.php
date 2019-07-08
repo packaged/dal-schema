@@ -2,43 +2,84 @@
 namespace Packaged\DalSchema\Databases\Mysql;
 
 use Packaged\Enum\AbstractEnum;
+use function str_replace;
 
+/**
+ * Class MySQLColumnType
+ *
+ * @method static MySQLColumnType DATE
+ * @method static MySQLColumnType SQL_DATE
+ * @method static MySQLColumnType ID
+ * @method static MySQLColumnType FID
+ * @method static MySQLColumnType VARCHAR
+ * @method static MySQLColumnType VARCHAR_MB4
+ * @method static MySQLColumnType TEXT
+ * @method static MySQLColumnType MEDIUMTEXT
+ * @method static MySQLColumnType LONGTEXT
+ * @method static MySQLColumnType TEXT_MB4
+ * @method static MySQLColumnType MEDIUMTEXT_MB4
+ * @method static MySQLColumnType LONGTEXT_MB4
+ * @method static MySQLColumnType BOOL
+ * @method static MySQLColumnType TINY_INT
+ * @method static MySQLColumnType TINY_INT_UNSIGNED
+ * @method static MySQLColumnType STATUS
+ * @method static MySQLColumnType BIG_INT
+ * @method static MySQLColumnType BIG_INT_UNSIGNED
+ * @method static MySQLColumnType SMALL_INT
+ * @method static MySQLColumnType SMALL_INT_UNSIGNED
+ * @method static MySQLColumnType INT_UNSIGNED
+ * @method static MySQLColumnType INT_SIGNED
+ * @method static MySQLColumnType MEDIUM_INT_UNSIGNED
+ * @method static MySQLColumnType MEDIUM_INT_SIGNED
+ * @method static MySQLColumnType AMOUNT
+ * @method static MySQLColumnType DECIMAL
+ * @method static MySQLColumnType DECIMAL_UNSIGNED
+ * @method static MySQLColumnType BLOB
+ * @method static MySQLColumnType LONGBLOB
+ * @method static MySQLColumnType MONEY
+ *
+ */
 class MySQLColumnType extends AbstractEnum
 {
-  const DATE = 'date';
-  const SQL_DATE = 'realdate';
-  const ID = 'id';
-  const FID = 'fid';
-  const VARCHAR = 'varchar';
-  const VARCHAR_MB4 = 'varchar_mb4';
-  const TEXT = 'text';
-  const MEDIUMTEXT = 'mediumtext';
-  const LONGTEXT = 'longtext';
-  const TEXT_MB4 = 'text_mb4';
-  const MEDIUMTEXT_MB4 = 'mediumtext_mb4';
-  const LONGTEXT_MB4 = 'longtext_mb4';
-  const BOOL = 'bool';
-  const TINY_INT = 'tinyint';
-  const TINY_INT_UNSIGNED = 'tinyintunsigned';
-  const STATUS = 'status';
-  const BIG_INT = 'bigint';
-  const BIG_INT_UNSIGNED = 'bigintunsigned';
-  const SMALL_INT = 'smallint';
-  const SMALL_INT_UNSIGNED = 'smallintunsigned';
-  const INT_UNSIGNED = 'intunsigned';
-  const INT_SIGNED = 'int';
-  const MEDIUM_INT_UNSIGNED = 'mediumintunsigned';
-  const MEDIUM_INT_SIGNED = 'mediumint';
-  const AMOUNT = 'amount';
-  const DECIMAL = 'decimal';
-  const DECIMAL_UNSIGNED = 'decimalunsigned';
-  const BLOB = 'blob';
-  const LONGBLOB = 'longblob';
-  const MONEY = 'money';
+  private const DATE = 'date';
+  private const SQL_DATE = 'realdate';
+  private const ID = 'id';
+  private const FID = 'fid';
+  private const VARCHAR = 'varchar';
+  private const VARCHAR_MB4 = 'varchar_mb4';
+  private const TEXT = 'text';
+  private const MEDIUMTEXT = 'mediumtext';
+  private const LONGTEXT = 'longtext';
+  private const TEXT_MB4 = 'text_mb4';
+  private const MEDIUMTEXT_MB4 = 'mediumtext_mb4';
+  private const LONGTEXT_MB4 = 'longtext_mb4';
+  private const BOOL = 'bool';
+  private const TINY_INT = 'tinyint';
+  private const TINY_INT_UNSIGNED = 'tinyintunsigned';
+  private const STATUS = 'status';
+  private const BIG_INT = 'bigint';
+  private const BIG_INT_UNSIGNED = 'bigintunsigned';
+  private const SMALL_INT = 'smallint';
+  private const SMALL_INT_UNSIGNED = 'smallintunsigned';
+  private const INT_UNSIGNED = 'intunsigned';
+  private const INT_SIGNED = 'int';
+  private const MEDIUM_INT_UNSIGNED = 'mediumintunsigned';
+  private const MEDIUM_INT_SIGNED = 'mediumint';
+  private const AMOUNT = 'amount';
+  private const DECIMAL = 'decimal';
+  private const DECIMAL_UNSIGNED = 'decimalunsigned';
+  private const BLOB = 'blob';
+  private const LONGBLOB = 'longblob';
+  private const MONEY = 'money';
 
-  public static function isInt($type): bool
+  public function getType()
   {
-    switch($type)
+    return str_replace('unsigned', '', $this->getValue());
+  }
+
+  public function isInt(): bool
+  {
+    switch($this->getValue())
     {
       case self::DATE:
       case self::INT_UNSIGNED:

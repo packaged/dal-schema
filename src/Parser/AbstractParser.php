@@ -3,6 +3,7 @@
 namespace Packaged\DalSchema\Parser;
 
 use Packaged\Dal\Ql\IQLDataConnection;
+use Packaged\DalSchema\Parser;
 
 abstract class AbstractParser implements Parser
 {

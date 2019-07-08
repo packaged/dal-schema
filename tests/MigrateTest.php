@@ -38,14 +38,14 @@ class MigrateTest extends TestCase
       [
         new MySQLColumn(
           'id',
-          new  MySQLColumnType(MySQLColumnType::INT_UNSIGNED),
+          MySQLColumnType::INT_UNSIGNED(),
           null,
           false,
           null,
           MySQLColumn::EXTRA_AUTO_INCREMENT
         ),
-        new MySQLColumn('field1', new MySQLColumnType(MySQLColumnType::VARCHAR), 50),
-        new MySQLColumn('field2', new MySQLColumnType(MySQLColumnType::TINY_INT_UNSIGNED)),
+        new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
+        new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
       ]
     );
 

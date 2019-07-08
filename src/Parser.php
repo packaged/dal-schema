@@ -1,9 +1,6 @@
 <?php
 
-namespace Packaged\DalSchema\Parser;
-
-use Packaged\DalSchema\Database;
-use Packaged\DalSchema\Table;
+namespace Packaged\DalSchema;
 
 interface Parser
 {

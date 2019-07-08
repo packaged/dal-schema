@@ -30,7 +30,8 @@ class MySQLParser extends AbstractParser
   public function parseDatabase(string $name)
   {
     $results = $this->_connection->fetchQueryResults(
-      'select DEFAULT_CHARACTER_SET_NAME,DEFAULT_COLLATION_NAME from information_schema.SCHEMATA where SCHEMA_NAME = ?',
+      'select DEFAULT_CHARACTER_SET_NAME,DEFAULT_COLLATION_NAME '
+      . 'from information_schema.SCHEMATA where SCHEMA_NAME = ?',
       [$name]
     );
     if(empty($results))
@@ -56,7 +57,9 @@ class MySQLParser extends AbstractParser
     $database = $this->parseDatabase($databaseName);
 
     $schemaResults = $this->_connection->fetchQueryResults(
-      'select TABLE_COMMENT,ENGINE,TABLE_COLLATION from information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+      'select TABLE_COMMENT,ENGINE,TABLE_COLLATION '
+      . 'from information_schema.TABLES '
+      . 'WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
       [$databaseName, $tableName]
     );
     if(empty($schemaResults))
@@ -65,7 +68,8 @@ class MySQLParser extends AbstractParser
     }
 
     $columnResults = $this->_connection->fetchQueryResults(
-      'select COLUMN_NAME,COLUMN_DEFAULT,IS_NULLABLE,DATA_TYPE,COLUMN_TYPE,CHARACTER_SET_NAME,COLLATION_NAME,EXTRA from information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+      'select COLUMN_NAME,COLUMN_DEFAULT,IS_NULLABLE,DATA_TYPE,COLUMN_TYPE,CHARACTER_SET_NAME,COLLATION_NAME,EXTRA ' .
+      'from information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
       [$databaseName, $tableName]
     );
     if(empty($columnResults))
@@ -93,7 +97,9 @@ class MySQLParser extends AbstractParser
     }
 
     $indexResults = $this->_connection->fetchQueryResults(
-      'select INDEX_NAME,COLUMN_NAME,NON_UNIQUE from information_schema.STATISTICS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? ORDER BY INDEX_NAME, SEQ_IN_INDEX',
+      'select INDEX_NAME,COLUMN_NAME,NON_UNIQUE '
+      . 'from information_schema.STATISTICS ' .
+      'WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? ORDER BY INDEX_NAME, SEQ_IN_INDEX',
       [$databaseName, $tableName]
     );
     $indexes = [];
@@ -102,20 +108,20 @@ class MySQLParser extends AbstractParser
       $constraintGroup = Arrays::igroup($indexResults, 'CONSTRAINT_NAME');
       foreach($constraintGroup as $keyName => $items)
       {
-        if($keyName === strtoupper(MySQLKeyType::PRIMARY))
+        if($keyName === MySQLKeyType::PRIMARY()->toUpper())
         {
-          $type = MySQLKeyType::PRIMARY;
+          $type = MySQLKeyType::PRIMARY();
         }
-        elseif(ValueAs::bool(Arrays::value($items[0], 'NON_UNIQUE')))
+        else if(ValueAs::bool(Arrays::value($items[0], 'NON_UNIQUE')))
         {
-          $type = MySQLKeyType::INDEX;
+          $type = MySQLKeyType::INDEX();
         }
         else
         {
-          $type = MySQLKeyType::UNIQUE;
+          $type = MySQLKeyType::UNIQUE();
         }
         // todo: fulltext & constraint
-        $indexes[] = new MySQLIndex($keyName, new MySQLKeyType($type), Arrays::ipull($items, 'COLUMN_NAME'));
+        $indexes[] = new MySQLIndex($keyName, $type, Arrays::ipull($items, 'COLUMN_NAME'));
       }
     }
 

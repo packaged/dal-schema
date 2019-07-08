@@ -36,7 +36,7 @@ class MySQLTable extends AbstractTable
     parent::__construct($database, $name, $description);
     $this->_characterSet = $characterSet;
     $this->_collation = $collation;
-    $this->_engine = $engine ?: new MySQLEngine(MySQLEngine::INNODB);
+    $this->_engine = $engine ?: MySQLEngine::INNODB();
     $this->_columns = Arrays::instancesOf($columns, MySQLColumn::class);
     $this->_indexes = Arrays::instancesOf($indexes, MySQLIndex::class);
   }

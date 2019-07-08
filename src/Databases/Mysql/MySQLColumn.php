@@ -23,7 +23,7 @@ class MySQLColumn extends AbstractColumn
   {
     $this->_setName($name);
     $this->_setType($type);
-    if($type->is(MySQLColumnType::ID))
+    if($type->is(MySQLColumnType::ID()))
     {
       $this->setExtra(self::EXTRA_AUTO_INCREMENT);
     }
@@ -195,14 +195,39 @@ class MySQLColumn extends AbstractColumn
 
   public function writerCreate(): string
   {
-    // TODO: Implement writerCreate() method.
-    $definition = [$this->getName(), $this->getType()];
+    $definition = ['`' . $this->getName() . '`'];
+
     $size = $this->getSize();
-    if($size)
+    $definition[] = $this->getType()->getType() . ($size ? '(' . implode(',', $size) . ')' : '');
+
+    if(!$this->getType()->isSigned())
     {
-      $definition[] = '(' . implode(',', $size) . ')';
+      $definition[] = 'unsigned';
     }
-    return join(' ', $definition);
+
+    $charSet = $this->getCharacterSet();
+    if($charSet)
+    {
+      $definition[] = 'CHARACTER SET ' . $charSet;
+    }
+
+    $collate = $this->getCollation();
+    if($collate)
+    {
+      $definition[] = 'COLLATE ' . $collate->getValue();
+    }
+
+    if(!$this->isNullable())
+    {
+      $definition[] = 'NOT NULL';
+    }
+    if($this->getDefaultValue())
+    {
+      $definition[] = 'DEFAULT ' . $this->getDefaultValue();
+    }
+
+    //TODO: Auto Increment
+    return implode(' ', $definition);
   }
 
   public function writerAlter(): string
