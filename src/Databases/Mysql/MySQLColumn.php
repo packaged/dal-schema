@@ -5,7 +5,7 @@ use Packaged\DalSchema\Abstracts\AbstractColumn;
 
 class MySQLColumn extends AbstractColumn
 {
-  const EXTRA_AUTO_INCREMENT = 'AUTO_INCREMENT';
+  const EXTRA_AUTO_INCREMENT = 'auto_increment';
 
   protected $_size;
   protected $_isNullable = false;

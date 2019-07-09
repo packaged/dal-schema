@@ -2,7 +2,6 @@
 namespace Packaged\DalSchema\Databases\Mysql;
 
 use Packaged\DalSchema\Index;
-use Packaged\Helpers\Arrays;
 
 class MySQLIndex implements Index
 {
@@ -14,7 +13,7 @@ class MySQLIndex implements Index
   {
     $this->_name = $name;
     $this->_type = $type;
-    $this->_columns = Arrays::instancesOf($columnNames, 'string');
+    $this->_columns = array_filter($columnNames, 'is_string');
   }
 
   public function getName(): string
@@ -34,7 +33,20 @@ class MySQLIndex implements Index
 
   public function writerCreate(): string
   {
-    // TODO: Implement writerCreate() method.
+    $cols = [];
+    foreach($this->getColumns() as $col)
+    {
+      $cols[] = '`' . $col . '`';
+    }
+
+    $type = $this->getType()->toUpper();
+    if($type === 'PRIMARY')
+    {
+      $type = 'PRIMARY KEY';
+    }
+
+    return 'CONSTRAINT `' . $this->getName() . '` ' . $type
+      . ' (' . implode(',', $cols) . ')';
   }
 
   public function writerAlter(): string

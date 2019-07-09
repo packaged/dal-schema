@@ -91,10 +91,15 @@ class MySQLTable extends AbstractTable
       $tableOpts[] = 'COLLATE ' . $collation;
     }
 
-    return 'CREATE TABLE ' . $this->getName() . '('
-      . join(', ', Objects::mpull($this->getColumns(), 'writerCreate'))
-      . join(', ', Objects::mpull($this->getIndexes(), 'writerCreate'))
-      . ') ' . join(' ', $tableOpts);
+    return 'CREATE TABLE `' . $this->getDatabase()->getName() . '`.`' . $this->getName()
+      . '` (' . join(
+        ', ',
+        array_merge(
+          Objects::mpull($this->getColumns(), 'writerCreate'),
+          Objects::mpull($this->getIndexes(), 'writerCreate')
+        )
+      ) . ') '
+      . join(' ', $tableOpts);
   }
 
   public function writerAlter(): string
