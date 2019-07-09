@@ -221,12 +221,18 @@ class MySQLColumn extends AbstractColumn
     {
       $definition[] = 'NOT NULL';
     }
+
     if($this->getDefaultValue())
     {
       $definition[] = 'DEFAULT ' . $this->getDefaultValue();
     }
 
-    //TODO: Auto Increment
+    $extra = $this->getExtra();
+    if($extra)
+    {
+      $definition[] = $extra;
+    }
+
     return implode(' ', $definition);
   }
 
