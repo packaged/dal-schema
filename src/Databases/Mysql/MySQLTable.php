@@ -92,14 +92,14 @@ class MySQLTable extends AbstractTable
     }
 
     return 'CREATE TABLE `' . $this->getDatabase()->getName() . '`.`' . $this->getName()
-      . '` (' . join(
+      . '` (' . implode(
         ', ',
         array_merge(
           Objects::mpull($this->getColumns(), 'writerCreate'),
           Objects::mpull($this->getIndexes(), 'writerCreate')
         )
       ) . ') '
-      . join(' ', $tableOpts);
+      . implode(' ', $tableOpts);
   }
 
   public function writerAlter(): string
