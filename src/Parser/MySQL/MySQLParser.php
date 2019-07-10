@@ -125,13 +125,16 @@ class MySQLParser extends AbstractParser
       }
     }
 
+    $tableCollation = new MySQLCollation($schemaResults[0]['TABLE_COLLATION']);
+
     return new MySQLTable(
       $database,
       $tableName,
       $schemaResults[0]['TABLE_COMMENT'],
       $columns,
       $indexes,
-      new MySQLCollation($schemaResults[0]['TABLE_COLLATION']),
+      $tableCollation->getChatacterSet(),
+      $tableCollation,
       new MySQLEngine($schemaResults[0]['ENGINE'])
     );
   }
