@@ -64,7 +64,7 @@ class MigrateTest extends TestCase
 
     $createTableQuery = $newTable->writerCreate();
     $this->assertEquals(
-      'CREATE TABLE `test_db`.`test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, CONSTRAINT `my_pk` PRIMARY KEY (`id`)) ENGINE InnoDB',
+      'CREATE TABLE `test_db`.`test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, PRIMARY KEY (`id`)) ENGINE InnoDB',
       $createTableQuery
     );
 
@@ -72,6 +72,6 @@ class MigrateTest extends TestCase
 
     // parse again, and check equal
     $checkTable = $parser->parseTable('test_db', 'test_table');
-    $this->assertEquals($newTable, $checkTable);
+    $this->assertEquals($createTableQuery, $checkTable->writerCreate());
   }
 }
