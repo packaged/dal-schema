@@ -8,7 +8,6 @@ use Packaged\Helpers\Objects;
 
 class MySQLTable extends AbstractTable
 {
-  protected $_characterSet;
   protected $_collation;
   protected $_engine;
   protected $_columns;
@@ -22,31 +21,24 @@ class MySQLTable extends AbstractTable
    * @param string           $description
    * @param MySQLColumn[]    $columns
    * @param MySQLIndex[]     $indexes
-   * @param string|null      $characterSet
-   * @param string|null      $collation
+   * @param MySQLCollation   $collation
    * @param MySQLEngine|null $engine
    */
   public function __construct(
     Database $database,
     string $name, string $description = '', array $columns = [], array $indexes = [],
-    string $characterSet = null, string $collation = null,
+    MySQLCollation $collation = null,
     MySQLEngine $engine = null
   )
   {
     parent::__construct($database, $name, $description);
-    $this->_characterSet = $characterSet;
     $this->_collation = $collation;
     $this->_engine = $engine ?: MySQLEngine::INNODB();
     $this->_columns = Arrays::instancesOf($columns, MySQLColumn::class);
     $this->_indexes = Arrays::instancesOf($indexes, MySQLIndex::class);
   }
 
-  public function getCharacterSet(): ?string
-  {
-    return $this->_characterSet;
-  }
-
-  public function getCollation(): ?string
+  public function getCollation(): ?MySQLCollation
   {
     return $this->_collation;
   }
@@ -80,14 +72,10 @@ class MySQLTable extends AbstractTable
     {
       $tableOpts[] = 'ENGINE ' . $engine;
     }
-    $charset = $this->getCharacterSet();
-    if($charset)
-    {
-      $tableOpts[] = 'CHARACTER SET ' . $charset;
-    }
     $collation = $this->getCollation();
     if($collation)
     {
+      $tableOpts[] = 'CHARACTER SET ' . $collation->getChatacterSet();
       $tableOpts[] = 'COLLATE ' . $collation;
     }
 
