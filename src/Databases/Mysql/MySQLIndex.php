@@ -38,15 +38,15 @@ class MySQLIndex implements Index
     {
       $cols[] = '`' . $col . '`';
     }
+    $cols = ' (' . implode(',', $cols) . ')';
 
     $type = $this->getType()->toUpper();
     if($type === 'PRIMARY')
     {
-      $type = 'PRIMARY KEY';
+      return 'PRIMARY KEY' . $cols;
     }
 
-    return 'CONSTRAINT `' . $this->getName() . '` ' . $type
-      . ' (' . implode(',', $cols) . ')';
+    return 'CONSTRAINT `' . $this->getName() . '` ' . $type . $cols;
   }
 
   public function writerAlter(): string
