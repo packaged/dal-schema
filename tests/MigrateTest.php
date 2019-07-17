@@ -5,6 +5,7 @@ namespace Packaged\Tests\DalSchema;
 use Exception;
 use Packaged\Dal\DalResolver;
 use Packaged\Dal\Ql\MySQLiConnection;
+use Packaged\DalSchema\Databases\Mysql\MySQLCollation;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumnType;
 use Packaged\DalSchema\Databases\Mysql\MySQLDatabase;
@@ -59,12 +60,13 @@ class MigrateTest extends TestCase
       ],
       [
         new MySQLIndex('my_pk', MySQLKeyType::PRIMARY(), 'id'),
-      ]
+      ],
+      new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
     );
 
     $createTableQuery = $newTable->writerCreate();
     $this->assertEquals(
-      'CREATE TABLE `test_db`.`test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, PRIMARY KEY (`id`)) ENGINE InnoDB',
+      'CREATE TABLE `test_db`.`test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, PRIMARY KEY (`id`)) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci',
       $createTableQuery
     );
 
