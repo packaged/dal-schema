@@ -121,7 +121,7 @@ class MySQLParser extends AbstractParser
           $type = MySQLKeyType::UNIQUE();
         }
         // todo: fulltext & constraint
-        $indexes[] = new MySQLIndex($keyName, $type, Arrays::ipull($items, 'COLUMN_NAME'));
+        $indexes[] = new MySQLIndex($keyName, $type, ...Arrays::ipull($items, 'COLUMN_NAME'));
       }
     }
 
@@ -133,7 +133,6 @@ class MySQLParser extends AbstractParser
       $schemaResults[0]['TABLE_COMMENT'],
       $columns,
       $indexes,
-      $tableCollation->getChatacterSet(),
       $tableCollation,
       new MySQLEngine($schemaResults[0]['ENGINE'])
     );
