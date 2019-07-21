@@ -1,7 +1,9 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
+use Exception;
 use Packaged\DalSchema\Index;
+use Packaged\DalSchema\Writer;
 
 class MySQLIndex implements Index
 {
@@ -49,8 +51,18 @@ class MySQLIndex implements Index
     return 'CONSTRAINT `' . $this->getName() . '` ' . $type . $cols;
   }
 
-  public function writerAlter(): string
+  /**
+   * @param Writer $w
+   *
+   * @return string
+   * @throws Exception
+   */
+  public function writerAlter(Writer $w): string
   {
+    if(!$w instanceof static)
+    {
+      throw new Exception('unexpected type provided to alter');
+    }
     // TODO: Implement writerAlter() method.
   }
 }

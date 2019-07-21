@@ -1,7 +1,9 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
+use Exception;
 use Packaged\DalSchema\Abstracts\AbstractDatabase;
+use Packaged\DalSchema\Writer;
 
 class MySQLDatabase extends AbstractDatabase
 {
@@ -46,9 +48,35 @@ class MySQLDatabase extends AbstractDatabase
       . ($collation ? ' COLLATION ' . $collation : '');
   }
 
-  public function writerAlter(): string
+  /**
+   * @param Writer $w
+   *
+   * @return string
+   * @throws Exception
+   */
+  public function writerAlter(Writer $w): string
   {
-    // TODO: Implement writerAlter() method.
+    if(!$w instanceof static)
+    {
+      throw new Exception('unexpected type provided to alter');
+    }
+    $parts = [];
+    if($this->_name !== $w->getName())
+    {
+      throw new Exception('Cannot rename databases in MySQL');
+    }
+    if($this->_characterSet && !$this->_characterSet->is($w->getCharacterSet()))
+    {
+      $parts[] = 'CHARACTER SET ' . $this->_characterSet;
+    }
+    if($this->_collation && !$this->_collation->is($w->getCollation()))
+    {
+      $parts[] = 'COLLATION ' . $this->_collation;
+    }
+    if($parts)
+    {
+      return 'ALTER DATABASE `' . $this->getName() . '` ' . implode(' ', $parts);
+    }
     return '';
   }
 }

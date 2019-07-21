@@ -4,6 +4,7 @@ namespace Packaged\Tests\DalSchema;
 
 use Exception;
 use Packaged\Dal\DalResolver;
+use Packaged\Dal\Exceptions\Connection\ConnectionException;
 use Packaged\Dal\Ql\MySQLiConnection;
 use Packaged\DalSchema\Databases\Mysql\MySQLCollation;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
@@ -17,6 +18,10 @@ use PHPUnit\Framework\TestCase;
 
 class MigrateTest extends TestCase
 {
+  /**
+   * @throws ConnectionException
+   * @throws Exception
+   */
   public function testMigration()
   {
     $conn = new MySQLiConnection();
@@ -71,6 +76,9 @@ class MigrateTest extends TestCase
     );
 
     $conn->runQuery($createTableQuery);
+
+    $checkDb = $parser->parseDatabase('test_db');
+    $this->assertEmpty($db->writerAlter($checkDb));
 
     // parse again, and check equal
     $checkTable = $parser->parseTable('test_db', 'test_table');

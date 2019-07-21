@@ -1,7 +1,9 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
+use Exception;
 use Packaged\DalSchema\Abstracts\AbstractColumn;
+use Packaged\DalSchema\Writer;
 
 class MySQLColumn extends AbstractColumn
 {
@@ -236,9 +238,18 @@ class MySQLColumn extends AbstractColumn
     return implode(' ', $definition);
   }
 
-  public function writerAlter(): string
+  /**
+   * @param Writer $w
+   *
+   * @return string
+   * @throws Exception
+   */
+  public function writerAlter(Writer $w): string
   {
+    if(!$w instanceof static)
+    {
+      throw new Exception('unexpected type provided to alter');
+    }
     // TODO: Implement writerAlter() method.
   }
-
 }

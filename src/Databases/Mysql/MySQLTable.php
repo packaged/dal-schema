@@ -1,8 +1,10 @@
 <?php
 namespace Packaged\DalSchema\Databases\Mysql;
 
+use Exception;
 use Packaged\DalSchema\Abstracts\AbstractTable;
 use Packaged\DalSchema\Database;
+use Packaged\DalSchema\Writer;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
 
@@ -106,9 +108,18 @@ class MySQLTable extends AbstractTable
       . implode(' ', $tableOpts);
   }
 
-  public function writerAlter(): string
+  /**
+   * @param Writer $w
+   *
+   * @return string
+   * @throws Exception
+   */
+  public function writerAlter(Writer $w): string
   {
+    if(!$w instanceof static)
+    {
+      throw new Exception('unexpected type provided to alter');
+    }
     // TODO: Implement writerAlter() method.
   }
-
 }
