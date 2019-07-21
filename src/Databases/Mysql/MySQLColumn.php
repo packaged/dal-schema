@@ -251,5 +251,6 @@ class MySQLColumn extends AbstractColumn
       throw new Exception('unexpected type provided to alter');
     }
     // TODO: Implement writerAlter() method.
+    return '';
   }
 }

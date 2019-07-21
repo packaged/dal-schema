@@ -120,6 +120,48 @@ class MySQLTable extends AbstractTable
     {
       throw new Exception('unexpected type provided to alter');
     }
-    // TODO: Implement writerAlter() method.
+    $parts = [];
+
+    // name
+    if($this->_name !== $w->getName())
+    {
+      $parts[] = 'RENAME `' . $w->getName() . '`';
+    }
+
+    // columns
+    /** @var MySQLColumn[] $newCols */
+    $newCols = Objects::mpull($this->getColumns(), null, 'getName');
+    /** @var MySQLColumn[] $oldCols */
+    $oldCols = Objects::mpull($w->getColumns(), null, 'getName');
+    foreach($newCols as $col)
+    {
+      if(isset($oldCols[$col->getName()]))
+      {
+        $colChange = $col->writerAlter($oldCols[$col->getName()]);
+        if($colChange)
+        {
+          $parts[] = $colChange;
+        }
+      }
+      else
+      {
+        $parts[] = $col->writerCreate();
+      }
+    }
+    $removeCols = array_diff_key($oldCols, $newCols);
+    foreach($removeCols as $col)
+    {
+      $parts[] = 'DROP `' . $col->getName() . '`';
+    }
+    // TODO: indexes
+    // TODO: engine
+    // TODO: charset
+    // TODO: collation
+
+    if($parts)
+    {
+      return 'ALTER TABLE `' . $this->_name . '` ' . implode(' ', $parts);
+    }
+    return '';
   }
 }
