@@ -80,8 +80,8 @@ class MigrateTest extends TestCase
     $checkDb = $parser->parseDatabase('test_db');
     $this->assertEmpty($db->writerAlter($checkDb));
 
-    // parse again, and check equal
+    // check alter is empty
     $checkTable = $parser->parseTable('test_db', 'test_table');
-    $this->assertEquals($createTableQuery, $checkTable->writerCreate());
+    $this->assertEmpty($checkTable->writerAlter($checkTable));
   }
 }
