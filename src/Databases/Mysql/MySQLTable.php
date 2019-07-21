@@ -9,6 +9,7 @@ use Packaged\Helpers\Objects;
 class MySQLTable extends AbstractTable
 {
   protected $_collation;
+  protected $_charset;
   protected $_engine;
   protected $_columns;
   protected $_indexes;
@@ -16,23 +17,25 @@ class MySQLTable extends AbstractTable
   /**
    * MySQLTable constructor.
    *
-   * @param Database         $database
-   * @param string           $name
-   * @param string           $description
-   * @param MySQLColumn[]    $columns
-   * @param MySQLIndex[]     $indexes
-   * @param MySQLCollation   $collation
-   * @param MySQLEngine|null $engine
+   * @param Database          $database
+   * @param string            $name
+   * @param string            $description
+   * @param MySQLColumn[]     $columns
+   * @param MySQLIndex[]      $indexes
+   * @param MySQLCollation    $collation
+   * @param MySQLCharacterSet $charset
+   * @param MySQLEngine|null  $engine
    */
   public function __construct(
     Database $database,
     string $name, string $description = '', array $columns = [], array $indexes = [],
-    MySQLCollation $collation = null,
+    MySQLCollation $collation = null, MySQLCharacterSet $charset = null,
     MySQLEngine $engine = null
   )
   {
     parent::__construct($database, $name, $description);
     $this->_collation = $collation;
+    $this->_charset = $charset;
     $this->_engine = $engine ?: MySQLEngine::INNODB();
     $this->_columns = Arrays::instancesOf($columns, MySQLColumn::class);
     $this->_indexes = Arrays::instancesOf($indexes, MySQLIndex::class);
@@ -41,6 +44,11 @@ class MySQLTable extends AbstractTable
   public function getCollation(): ?MySQLCollation
   {
     return $this->_collation;
+  }
+
+  public function getCharacterSet(): ?MySQLCharacterSet
+  {
+    return $this->_charset;
   }
 
   public function getEngine(): ?MySQLEngine
@@ -72,10 +80,18 @@ class MySQLTable extends AbstractTable
     {
       $tableOpts[] = 'ENGINE ' . $engine;
     }
+    $charset = $this->getCharacterSet();
+    if(!$charset && $this->_collation)
+    {
+      $charset = $this->_collation->getChatacterSet();
+    }
+    if($charset)
+    {
+      $tableOpts[] = 'CHARACTER SET ' . $charset;
+    }
     $collation = $this->getCollation();
     if($collation)
     {
-      $tableOpts[] = 'CHARACTER SET ' . $collation->getChatacterSet();
       $tableOpts[] = 'COLLATE ' . $collation;
     }
 

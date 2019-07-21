@@ -10,12 +10,12 @@ class MySQLDatabase extends AbstractDatabase
   protected $_ifNotExists = false;
 
   public function __construct(
-    string $name, MySQLCharacterSet $characterSet = null, MySQLCollation $collation = null, bool $ifNotExists = false
+    string $name, MySQLCollation $collation = null, MySQLCharacterSet $characterSet = null, bool $ifNotExists = false
   )
   {
     parent::__construct($name);
-    $this->_characterSet = $characterSet;
     $this->_collation = $collation;
+    $this->_characterSet = $characterSet;
     $this->_ifNotExists = $ifNotExists;
   }
 

@@ -40,8 +40,8 @@ class MySQLParser extends AbstractParser
     }
     return new MySQLDatabase(
       $name,
-      new MySQLCharacterSet($results[0]['DEFAULT_CHARACTER_SET_NAME']),
-      new MySQLCollation($results[0]['DEFAULT_COLLATION_NAME'])
+      new MySQLCollation($results[0]['DEFAULT_COLLATION_NAME']),
+      new MySQLCharacterSet($results[0]['DEFAULT_CHARACTER_SET_NAME'])
     );
   }
 
@@ -57,9 +57,11 @@ class MySQLParser extends AbstractParser
     $database = $this->parseDatabase($databaseName);
 
     $schemaResults = $this->_connection->fetchQueryResults(
-      'select TABLE_COMMENT,ENGINE,TABLE_COLLATION '
-      . 'from information_schema.TABLES '
-      . 'WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+      'select T.TABLE_COMMENT,T.ENGINE,T.TABLE_COLLATION, CCSA.character_set_name
+      from information_schema.TABLES T,
+         information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` CCSA
+      WHERE CCSA.collation_name = T.table_collation 
+      AND T.TABLE_SCHEMA = ? AND T.TABLE_NAME = ?',
       [$databaseName, $tableName]
     );
     if(empty($schemaResults))
@@ -126,6 +128,7 @@ class MySQLParser extends AbstractParser
     }
 
     $tableCollation = new MySQLCollation($schemaResults[0]['TABLE_COLLATION']);
+    $tableCharset = new MySQLCharacterSet($schemaResults[0]['character_set_name']);
 
     return new MySQLTable(
       $database,
@@ -134,6 +137,7 @@ class MySQLParser extends AbstractParser
       $columns,
       $indexes,
       $tableCollation,
+      $tableCharset,
       new MySQLEngine($schemaResults[0]['ENGINE'])
     );
   }
