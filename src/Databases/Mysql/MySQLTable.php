@@ -151,9 +151,35 @@ class MySQLTable extends AbstractTable
     $removeCols = array_diff_key($oldCols, $newCols);
     foreach($removeCols as $col)
     {
-      $parts[] = 'DROP `' . $col->getName() . '`';
+      $parts[] = 'DROP COLUMN `' . $col->getName() . '`';
     }
-    // TODO: indexes
+
+    // indexes
+    /** @var MySQLIndex[] $newIndexes */
+    $newIndexes = Objects::mpull($this->getIndexes(), null, 'getName');
+    /** @var MySQLIndex[] $oldIndexes */
+    $oldIndexes = Objects::mpull($w->getIndexes(), null, 'getName');
+    foreach($newIndexes as $idx)
+    {
+      if(isset($oldIndexes[$idx->getName()]))
+      {
+        $colChange = $idx->writerAlter($oldIndexes[$idx->getName()]);
+        if($colChange)
+        {
+          $parts[] = $colChange;
+        }
+      }
+      else
+      {
+        $parts[] = $idx->writerCreate();
+      }
+    }
+    $removeCols = array_diff_key($oldIndexes, $newIndexes);
+    foreach($removeCols as $idx)
+    {
+      $parts[] = 'DROP INDEX `' . $idx->getName() . '`';
+    }
+
     // TODO: engine
     // TODO: charset
     // TODO: collation

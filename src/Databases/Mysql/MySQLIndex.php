@@ -64,5 +64,6 @@ class MySQLIndex implements Index
       throw new Exception('unexpected type provided to alter');
     }
     // TODO: Implement writerAlter() method.
+    return '//not implemented';
   }
 }
