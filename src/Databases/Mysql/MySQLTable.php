@@ -172,13 +172,8 @@ class MySQLTable extends AbstractTable
       }
       else
       {
-        $parts[] = $idx->writerCreate();
+        $parts[] = 'ADD `' . $idx->writerCreate();
       }
-    }
-    $removeCols = array_diff_key($oldIndexes, $newIndexes);
-    foreach($removeCols as $idx)
-    {
-      $parts[] = 'DROP INDEX `' . $idx->getName() . '`';
     }
 
     // TODO: engine
@@ -187,7 +182,7 @@ class MySQLTable extends AbstractTable
 
     if($parts)
     {
-      return 'ALTER TABLE `' . $this->_name . '` ' . implode(' ', $parts);
+      return 'ALTER TABLE `' . $this->_database->getName() . '`.`' . $this->getName() . '` ' . implode(' ', $parts);
     }
     return '';
   }

@@ -20,6 +20,10 @@ class MySQLIndex implements Index
 
   public function getName(): string
   {
+    if($this->getType()->is(MySQLKeyType::PRIMARY()))
+    {
+      return $this->getType()->toUpper();
+    }
     return $this->_name;
   }
 

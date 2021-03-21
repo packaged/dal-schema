@@ -9,16 +9,14 @@ class MySQLDatabase extends AbstractDatabase
 {
   protected $_characterSet;
   protected $_collation;
-  protected $_ifNotExists = false;
 
   public function __construct(
-    string $name, MySQLCollation $collation = null, MySQLCharacterSet $characterSet = null, bool $ifNotExists = false
+    string $name, MySQLCollation $collation = null, MySQLCharacterSet $characterSet = null
   )
   {
     parent::__construct($name);
     $this->_collation = $collation;
     $this->_characterSet = $characterSet;
-    $this->_ifNotExists = $ifNotExists;
   }
 
   public function getCharacterSet(): ?MySQLCharacterSet
@@ -31,16 +29,10 @@ class MySQLDatabase extends AbstractDatabase
     return $this->_collation;
   }
 
-  public function ifNotExists(): bool
-  {
-    return $this->_ifNotExists;
-  }
-
-  public function writerCreate(): string
+  public function writerCreate(bool $ifNotExists = false): string
   {
     $charset = $this->getCharacterSet();
     $collation = $this->getCollation();
-    $ifNotExists = $this->ifNotExists();
     return 'CREATE DATABASE'
       . ($ifNotExists ? ' IF NOT EXISTS' : '')
       . ' `' . $this->getName() . '`'

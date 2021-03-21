@@ -4,6 +4,7 @@ namespace Packaged\DalSchema\Databases\Mysql;
 use Exception;
 use Packaged\DalSchema\Abstracts\AbstractColumn;
 use Packaged\DalSchema\Writer;
+use Packaged\Helpers\ValueAs;
 
 class MySQLColumn extends AbstractColumn
 {
@@ -52,7 +53,7 @@ class MySQLColumn extends AbstractColumn
   }
 
   /**
-   * @return int|array
+   * @return int|int[]
    */
   public function getSize()
   {
@@ -60,7 +61,7 @@ class MySQLColumn extends AbstractColumn
   }
 
   /**
-   * @param int|array|null $size
+   * @param int|int[]|null $size
    *
    * @return $this
    */
@@ -70,13 +71,9 @@ class MySQLColumn extends AbstractColumn
     {
       $this->_size = null;
     }
-    else if(is_string($size) && strpos($size, ',') > 0)
-    {
-      $this->_size = array_map(function ($i) { return (int)$i; }, explode(',', $size));
-    }
     else
     {
-      $this->_size = is_array($size) ? $size : [$size];
+      $this->_size = array_map(function ($i) { return (int)$i; }, ValueAs::arr($size));
     }
     return $this;
   }
@@ -134,7 +131,7 @@ class MySQLColumn extends AbstractColumn
    */
   public function setExtra(?string $extra)
   {
-    $this->_extra = $extra;
+    $this->_extra = $extra ?: null;
     return $this;
   }
 
@@ -255,8 +252,8 @@ class MySQLColumn extends AbstractColumn
       || $this->getSize() !== $old->getSize()
       || $this->getType()->getType() !== $old->getType()->getType()
       || $this->getType()->isSigned() !== $old->getType()->isSigned()
-      || $this->getCharacterSet() !== $old->getCharacterSet()
-      || $this->getCollation() !== $old->getCollation()
+      || (string)$this->getCharacterSet() !== (string)$old->getCharacterSet()
+      || (string)$this->getCollation() !== (string)$old->getCollation()
       || $this->isNullable() !== $old->isNullable()
       || $this->getDefaultValue() !== $old->getDefaultValue()
       || $this->getExtra() !== $old->getExtra()
