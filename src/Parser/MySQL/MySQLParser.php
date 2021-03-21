@@ -52,7 +52,7 @@ class MySQLParser extends AbstractParser
    * @return MySQLTable
    * @throws Exception
    */
-  public function parseTable(string $databaseName, string $tableName)
+  public function parseTable(string $databaseName, string $tableName): ?MySQLTable
   {
     $database = $this->parseDatabase($databaseName);
 
