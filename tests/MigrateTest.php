@@ -40,12 +40,12 @@ class MigrateTest extends TestCase
     {
       $checkTable = null;
     }
-    $this->assertNull($checkTable);
+    self::assertNull($checkTable);
 
     // create db
     $db = new MySQLDatabase('test_db', null, null, true);
     $createDbQuery = $db->writerCreate();
-    $this->assertEquals('CREATE DATABASE IF NOT EXISTS `test_db`', $createDbQuery);
+    self::assertEquals('CREATE DATABASE IF NOT EXISTS `test_db`', $createDbQuery);
     $conn->runQuery($createDbQuery);
 
     // create table
@@ -70,7 +70,7 @@ class MigrateTest extends TestCase
     );
 
     $createTableQuery = $newTable->writerCreate();
-    $this->assertEquals(
+    self::assertEquals(
       'CREATE TABLE `test_db`.`test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, PRIMARY KEY (`id`)) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci',
       $createTableQuery
     );
@@ -78,10 +78,10 @@ class MigrateTest extends TestCase
     $conn->runQuery($createTableQuery);
 
     $checkDb = $parser->parseDatabase('test_db');
-    $this->assertEmpty($db->writerAlter($checkDb));
+    self::assertEmpty($db->writerAlter($checkDb));
 
     // check alter is empty
     $checkTable = $parser->parseTable('test_db', 'test_table');
-    $this->assertEmpty($checkTable->writerAlter($checkTable));
+    self::assertEmpty($checkTable->writerAlter($checkTable));
   }
 }
