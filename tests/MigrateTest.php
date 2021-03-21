@@ -86,8 +86,9 @@ class MigrateTest extends TestCase
 
     $alterTableQuery = $tblSchema->writerAlter($parsed);
     self::assertEquals(
-      'ALTER TABLE `test_db`.`test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, PRIMARY KEY (`id`)) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+      'ALTER TABLE `test_db`.`test_table` ADD INDEX `f1_idx` (`field1`)',
       $alterTableQuery
     );
+    $this->_conn->runQuery($alterTableQuery);
   }
 }

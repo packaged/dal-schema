@@ -167,12 +167,12 @@ class MySQLTable extends AbstractTable
         if($colChange)
         {
           $parts[] = 'DROP ' . $idx->getType()->toUpper() . ' `' . $idx->getName() . '`';
-          $parts[] = 'ADD `' . $idx->getName() . '` ' . $colChange;
+          $parts[] = 'ADD ' . $colChange;
         }
       }
       else
       {
-        $parts[] = 'ADD `' . $idx->writerCreate();
+        $parts[] = 'ADD ' . $idx->writerCreate();
       }
     }
 
