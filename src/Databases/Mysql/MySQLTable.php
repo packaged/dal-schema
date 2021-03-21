@@ -109,30 +109,30 @@ class MySQLTable extends AbstractTable
   }
 
   /**
-   * @param Writer $w
+   * @param Writer $old
    *
    * @return string
    * @throws Exception
    */
-  public function writerAlter(Writer $w): string
+  public function writerAlter(Writer $old): string
   {
-    if(!$w instanceof static)
+    if(!$old instanceof static)
     {
       throw new Exception('unexpected type provided to alter');
     }
     $parts = [];
 
     // name
-    if($this->_name !== $w->getName())
+    if($this->_name !== $old->getName())
     {
-      $parts[] = 'RENAME `' . $w->getName() . '`';
+      $parts[] = 'RENAME `' . $old->getName() . '`';
     }
 
     // columns
     /** @var MySQLColumn[] $newCols */
     $newCols = Objects::mpull($this->getColumns(), null, 'getName');
     /** @var MySQLColumn[] $oldCols */
-    $oldCols = Objects::mpull($w->getColumns(), null, 'getName');
+    $oldCols = Objects::mpull($old->getColumns(), null, 'getName');
     foreach($newCols as $col)
     {
       if(isset($oldCols[$col->getName()]))
@@ -158,7 +158,7 @@ class MySQLTable extends AbstractTable
     /** @var MySQLIndex[] $newIndexes */
     $newIndexes = Objects::mpull($this->getIndexes(), null, 'getName');
     /** @var MySQLIndex[] $oldIndexes */
-    $oldIndexes = Objects::mpull($w->getIndexes(), null, 'getName');
+    $oldIndexes = Objects::mpull($old->getIndexes(), null, 'getName');
     foreach($newIndexes as $idx)
     {
       if(isset($oldIndexes[$idx->getName()]))

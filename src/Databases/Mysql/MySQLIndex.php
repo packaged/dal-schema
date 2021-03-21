@@ -52,14 +52,14 @@ class MySQLIndex implements Index
   }
 
   /**
-   * @param Writer $w
+   * @param Writer $old
    *
    * @return string
    * @throws Exception
    */
-  public function writerAlter(Writer $w): string
+  public function writerAlter(Writer $old): string
   {
-    if(!$w instanceof static)
+    if(!$old instanceof static)
     {
       throw new Exception('unexpected type provided to alter');
     }

@@ -49,27 +49,27 @@ class MySQLDatabase extends AbstractDatabase
   }
 
   /**
-   * @param Writer $w
+   * @param Writer $old
    *
    * @return string
    * @throws Exception
    */
-  public function writerAlter(Writer $w): string
+  public function writerAlter(Writer $old): string
   {
-    if(!$w instanceof static)
+    if(!$old instanceof static)
     {
       throw new Exception('unexpected type provided to alter');
     }
     $parts = [];
-    if($this->_name !== $w->getName())
+    if($this->_name !== $old->getName())
     {
       throw new Exception('Cannot rename databases in MySQL');
     }
-    if($this->_characterSet && !$this->_characterSet->is($w->getCharacterSet()))
+    if($this->_characterSet && !$this->_characterSet->is($old->getCharacterSet()))
     {
       $parts[] = 'CHARACTER SET ' . $this->_characterSet;
     }
-    if($this->_collation && !$this->_collation->is($w->getCollation()))
+    if($this->_collation && !$this->_collation->is($old->getCollation()))
     {
       $parts[] = 'COLLATION ' . $this->_collation;
     }

@@ -6,5 +6,5 @@ interface Writer
 {
   public function writerCreate(): string;
 
-  public function writerAlter(Writer $writer): string;
+  public function writerAlter(Writer $old): string;
 }
