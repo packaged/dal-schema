@@ -11,11 +11,11 @@ class MySQLIndex implements Index
   protected $_type;
   protected $_columns;
 
-  public function __construct(string $name, MySQLKeyType $type, ...$columnNames)
+  public function __construct(string $name, MySQLKeyType $type, string ...$columnNames)
   {
     $this->_name = $name;
     $this->_type = $type;
-    $this->_columns = array_filter($columnNames, 'is_string');
+    $this->_columns = $columnNames;
   }
 
   public function getName(): string
