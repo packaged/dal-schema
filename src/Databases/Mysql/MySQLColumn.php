@@ -239,18 +239,31 @@ class MySQLColumn extends AbstractColumn
   }
 
   /**
-   * @param Writer $w
+   * @param Writer $old
    *
    * @return string
    * @throws Exception
    */
-  public function writerAlter(Writer $w): string
+  public function writerAlter(Writer $old): string
   {
-    if(!$w instanceof static)
+    if(!$old instanceof static)
     {
       throw new Exception('unexpected type provided to alter');
     }
-    // TODO: Implement writerAlter() method.
-    return '//not implemented';
+
+    if($this->getName() !== $old->getName()
+      || $this->getSize() !== $old->getSize()
+      || $this->getType()->getType() !== $old->getType()->getType()
+      || $this->getType()->isSigned() !== $old->getType()->isSigned()
+      || $this->getCharacterSet() !== $old->getCharacterSet()
+      || $this->getCollation() !== $old->getCollation()
+      || $this->isNullable() !== $old->isNullable()
+      || $this->getDefaultValue() !== $old->getDefaultValue()
+      || $this->getExtra() !== $old->getExtra()
+    )
+    {
+      return 'CHANGE COLUMN `' . $old->getName() . '`' . $this->writerCreate();
+    }
+    return '';
   }
 }
