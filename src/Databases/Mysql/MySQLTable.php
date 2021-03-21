@@ -166,7 +166,8 @@ class MySQLTable extends AbstractTable
         $colChange = $idx->writerAlter($oldIndexes[$idx->getName()]);
         if($colChange)
         {
-          $parts[] = $colChange;
+          $parts[] = 'DROP ' . $idx->getType()->toUpper() . ' `' . $idx->getName() . '`';
+          $parts[] = 'ADD `' . $idx->getName() . '` ' . $colChange;
         }
       }
       else

@@ -42,13 +42,13 @@ class MySQLIndex implements Index
     }
     $cols = ' (' . implode(',', $cols) . ')';
 
-    $type = $this->getType()->toUpper();
-    if($type === 'PRIMARY')
+    $type = $this->getType();
+    if($type->is(MySQLKeyType::PRIMARY()))
     {
       return 'PRIMARY KEY' . $cols;
     }
 
-    return 'CONSTRAINT `' . $this->getName() . '` ' . $type . $cols;
+    return 'CONSTRAINT `' . $this->getName() . '` ' . $type->toUpper() . $cols;
   }
 
   /**
@@ -63,7 +63,14 @@ class MySQLIndex implements Index
     {
       throw new Exception('unexpected type provided to alter');
     }
-    // TODO: Implement writerAlter() method.
-    return '//not implemented';
+
+    $addedCols = array_diff($this->getColumns(), $old->getColumns());
+    $removedCols = array_diff($old->getColumns(), $this->getColumns());
+
+    if(empty($addedCols) && empty($removedCols))
+    {
+      return '';
+    }
+    return $this->writerCreate();
   }
 }
