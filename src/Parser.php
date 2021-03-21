@@ -12,10 +12,10 @@ interface Parser
   public function parseDatabase(string $name);
 
   /**
-   * @param string $database
+   * @param string $databaseName
    * @param string $tableName
    *
    * @return Table
    */
-  public function parseTable(string $database, string $tableName);
+  public function parseTable(string $databaseName, string $tableName);
 }

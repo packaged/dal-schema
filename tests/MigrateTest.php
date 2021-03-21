@@ -52,14 +52,7 @@ class MigrateTest extends TestCase
     $newTable = new MySQLTable(
       $db, 'test_table', 'my test table',
       [
-        new MySQLColumn(
-          'id',
-          MySQLColumnType::INT_UNSIGNED(),
-          null,
-          false,
-          null,
-          MySQLColumn::EXTRA_AUTO_INCREMENT
-        ),
+        new MySQLColumn('id', MySQLColumnType::INT_UNSIGNED(), null, false, null, MySQLColumn::EXTRA_AUTO_INCREMENT),
         new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
         new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
       ],
