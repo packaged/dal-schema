@@ -107,10 +107,10 @@ class MySQLParser extends AbstractParser
     $indexes = [];
     if(!empty($indexResults))
     {
-      $constraintGroup = Arrays::igroup($indexResults, 'INDEX_NAME');
-      foreach($constraintGroup as $keyName => $items)
+      $indexGroup = Arrays::igroup($indexResults, 'INDEX_NAME');
+      foreach($indexGroup as $keyName => $items)
       {
-        if($keyName === MySQLKeyType::PRIMARY()->toUpper())
+        if($keyName === 'PRIMARY')
         {
           $type = MySQLKeyType::PRIMARY();
         }

@@ -102,9 +102,7 @@ class MigrateTest extends TestCase
       new MySQLTable(
         $this->_testDb, 'test_table', 'my test table',
         [
-          new MySQLColumn(
-            'id', MySQLColumnType::INT_UNSIGNED(), null, false, null, MySQLColumn::EXTRA_AUTO_INCREMENT
-          ),
+          new MySQLColumn('id', MySQLColumnType::INT_UNSIGNED(), null, false, null, MySQLColumn::EXTRA_AUTO_INCREMENT),
           new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
           new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
         ],
@@ -124,6 +122,63 @@ class MigrateTest extends TestCase
     $alterTableQuery = $tblSchema->writerAlter($parsed);
     self::assertEquals(
       'ALTER TABLE `test_db`.`test_table` ADD INDEX `f1_idx` (`field1`)',
+      $alterTableQuery
+    );
+    $this->_conn->runQuery($alterTableQuery);
+
+    // --- migration: change primary key
+    $dao = new TestDao();
+    $dao->setDaoSchema(
+      new MySQLTable(
+        $this->_testDb, 'test_table', 'my test table',
+        [
+          new MySQLColumn('id', MySQLColumnType::INT_UNSIGNED(), null, false, null),
+          new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
+          new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
+        ],
+        [
+          new MySQLIndex('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
+        ],
+        new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
+      )
+    );
+    $tblSchema = $dao->getDaoSchema();
+    $dbSchema = $tblSchema->getDatabase();
+
+    $parser = new MySQLParser($this->_conn);
+    $parsed = $parser->parseTable($dbSchema->getName(), $tblSchema->getName());
+
+    $alterTableQuery = $tblSchema->writerAlter($parsed);
+    self::assertEquals(
+      'ALTER TABLE `test_db`.`test_table` CHANGE COLUMN `id` `id` int(10) unsigned NOT NULL, DROP PRIMARY KEY, ADD PRIMARY KEY (`field1`)',
+      $alterTableQuery
+    );
+    $this->_conn->runQuery($alterTableQuery);
+
+    // --- migration: drop old primary key
+    $dao = new TestDao();
+    $dao->setDaoSchema(
+      new MySQLTable(
+        $this->_testDb, 'test_table', 'my test table',
+        [
+          new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
+          new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
+        ],
+        [
+          new MySQLIndex('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
+        ],
+        new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
+      )
+    );
+    $tblSchema = $dao->getDaoSchema();
+    $dbSchema = $tblSchema->getDatabase();
+
+    $parser = new MySQLParser($this->_conn);
+    $parsed = $parser->parseTable($dbSchema->getName(), $tblSchema->getName());
+
+    $alterTableQuery = $tblSchema->writerAlter($parsed);
+    self::assertEquals(
+      'ALTER TABLE `test_db`.`test_table` DROP COLUMN `id`',
       $alterTableQuery
     );
     $this->_conn->runQuery($alterTableQuery);

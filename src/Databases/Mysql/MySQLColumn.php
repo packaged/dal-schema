@@ -259,7 +259,7 @@ class MySQLColumn extends AbstractColumn
       || $this->getExtra() !== $old->getExtra()
     )
     {
-      return 'CHANGE COLUMN `' . $old->getName() . '`' . $this->writerCreate();
+      return 'CHANGE COLUMN `' . $old->getName() . '` ' . $this->writerCreate();
     }
     return '';
   }

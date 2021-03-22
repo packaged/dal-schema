@@ -11,15 +11,16 @@ use function strtoupper;
  * @method static MySQLKeyType UNIQUE
  * @method static MySQLKeyType INDEX
  * @method static MySQLKeyType FULLTEXT
- * @method static MySQLKeyType CONSTRAINT
+ *
+ * todo: constraint
+ * todo: foreign key
  */
 class MySQLKeyType extends AbstractEnum
 {
-  private const PRIMARY = 'primary';
-  private const UNIQUE = 'unique';
-  private const INDEX = 'index';
+  private const PRIMARY  = 'primary key';
+  private const UNIQUE   = 'unique';
+  private const INDEX    = 'index';
   private const FULLTEXT = 'fulltext';
-  private const CONSTRAINT = 'constraint';
 
   public function toUpper()
   {

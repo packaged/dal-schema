@@ -49,7 +49,7 @@ class MySQLIndex implements Index
     $type = $this->getType();
     if($type->is(MySQLKeyType::PRIMARY()))
     {
-      return 'PRIMARY KEY ' . $cols;
+      return $type->toUpper() . ' ' . $cols;
     }
 
     return $type->toUpper() . ' `' . $this->getName() . '` ' . $cols;
@@ -75,6 +75,16 @@ class MySQLIndex implements Index
     {
       return '';
     }
-    return $this->writerCreate();
+
+    $type = $this->getType();
+    if($type->is(MySQLKeyType::PRIMARY()))
+    {
+      $drop = 'DROP ' . $type->toUpper();
+    }
+    else
+    {
+      $drop = 'DROP ' . $type->toUpper() . ' `' . $this->getName() . '`';
+    }
+    return $drop . ', ADD ' . $this->writerCreate();
   }
 }
