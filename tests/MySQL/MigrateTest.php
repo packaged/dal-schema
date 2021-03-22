@@ -1,6 +1,6 @@
 <?php
 
-namespace Packaged\Tests\DalSchema;
+namespace Packaged\Tests\DalSchema\MySQL;
 
 use Exception;
 use Packaged\Dal\DalResolver;
