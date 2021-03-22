@@ -2,6 +2,7 @@
 namespace Packaged\DalSchema\Databases\Cassandra;
 
 use Packaged\DalSchema\Key;
+use Packaged\DalSchema\Writer;
 use Packaged\Helpers\Arrays;
 
 class CassandraKey implements Key
@@ -30,5 +31,15 @@ class CassandraKey implements Key
   public function getType(): CassandraKeyType
   {
     return $this->_type;
+  }
+
+  public function writerCreate(): string
+  {
+    // TODO: Implement writerCreate() method.
+  }
+
+  public function writerAlter(Writer $old): string
+  {
+    // TODO: Implement writerAlter() method.
   }
 }
