@@ -3,6 +3,7 @@ namespace Packaged\DalSchema\Databases\Mysql;
 
 use Exception;
 use Packaged\DalSchema\Abstracts\AbstractTable;
+use Packaged\DalSchema\Column;
 use Packaged\DalSchema\Database;
 use Packaged\DalSchema\Key;
 use Packaged\DalSchema\Writer;
@@ -18,28 +19,14 @@ class MySQLTable extends AbstractTable
   /**
    * MySQLTable constructor.
    *
-   * @param Database           $database
-   * @param string             $name
-   * @param string             $description
-   * @param MySQLColumn[]      $columns
-   * @param MySQLKey[]         $indexes
-   * @param ?MySQLCollation    $collation
-   * @param ?MySQLCharacterSet $charset
-   * @param ?MySQLEngine       $engine
+   * @param Database $database
+   * @param string   $name
+   * @param string   $description
    */
-  public function __construct(
-    Database $database,
-    string $name, string $description = '', array $columns = [], array $indexes = [],
-    MySQLCollation $collation = null, MySQLCharacterSet $charset = null,
-    MySQLEngine $engine = null
-  )
+  public function __construct(Database $database, string $name, string $description = '')
   {
     parent::__construct($database, $name, $description);
-    $this->_collation = $collation;
-    $this->_charset = $charset;
-    $this->_engine = $engine ?: MySQLEngine::INNODB();
-    $this->_columns = Arrays::instancesOf($columns, MySQLColumn::class);
-    $this->_indexes = Arrays::instancesOf($indexes, MySQLKey::class);
+    $this->_engine = MySQLEngine::INNODB();
   }
 
   public function getCollation(): ?MySQLCollation
@@ -47,9 +34,21 @@ class MySQLTable extends AbstractTable
     return $this->_collation;
   }
 
+  public function setCollation(MySQLCollation $collation): self
+  {
+    $this->_collation = $collation;
+    return $this;
+  }
+
   public function getCharacterSet(): ?MySQLCharacterSet
   {
     return $this->_charset;
+  }
+
+  public function setCharacterSet(MySQLCharacterSet $charset): self
+  {
+    $this->_charset = $charset;
+    return $this;
   }
 
   public function getEngine(): ?MySQLEngine
@@ -57,17 +56,28 @@ class MySQLTable extends AbstractTable
     return $this->_engine;
   }
 
+  public function setEngine(MySQLEngine $engine): self
+  {
+    $this->_engine = $engine;
+    return $this;
+  }
+
   /**
    * @return MySQLKey[]
    */
-  public function getIndexes(): array
+  public function getKeys(): array
   {
-    return parent::getIndexes();
+    return parent::getKeys();
   }
 
-  public function addIndex(Key ...$index): AbstractTable
+  public function addColumn(Column ...$column): self
   {
-    return parent::addIndex(...Arrays::instancesOf($index, MySQLKey::class));
+    return parent::addColumn(...Arrays::instancesOf($column, MySQLColumn::class));
+  }
+
+  public function addKey(Key ...$key): self
+  {
+    return parent::addKey(...Arrays::instancesOf($key, MySQLKey::class));
   }
 
   public function writerCreate(): string
@@ -98,7 +108,7 @@ class MySQLTable extends AbstractTable
         ', ',
         array_merge(
           Objects::mpull($this->getColumns(), 'writerCreate'),
-          Objects::mpull($this->getIndexes(), 'writerCreate')
+          Objects::mpull($this->getKeys(), 'writerCreate')
         )
       ) . ') '
       . implode(' ', $tableOpts);
@@ -150,16 +160,16 @@ class MySQLTable extends AbstractTable
       $parts[] = 'DROP COLUMN `' . $col->getName() . '`';
     }
 
-    // indexes
-    /** @var MySQLKey[] $newIndexes */
-    $newIndexes = Objects::mpull($this->getIndexes(), null, 'getName');
-    /** @var MySQLKey[] $oldIndexes */
-    $oldIndexes = Objects::mpull($old->getIndexes(), null, 'getName');
-    foreach($newIndexes as $idx)
+    // keys
+    /** @var MySQLKey[] $newKeys */
+    $newKeys = Objects::mpull($this->getKeys(), null, 'getName');
+    /** @var MySQLKey[] $oldKeys */
+    $oldKeys = Objects::mpull($old->getKeys(), null, 'getName');
+    foreach($newKeys as $key)
     {
-      if(isset($oldIndexes[$idx->getName()]))
+      if(isset($oldKeys[$key->getName()]))
       {
-        $colChange = $idx->writerAlter($oldIndexes[$idx->getName()]);
+        $colChange = $key->writerAlter($oldKeys[$key->getName()]);
         if($colChange)
         {
           $parts[] = $colChange;
@@ -167,7 +177,7 @@ class MySQLTable extends AbstractTable
       }
       else
       {
-        $parts[] = 'ADD ' . $idx->writerCreate();
+        $parts[] = 'ADD ' . $key->writerCreate();
       }
     }
 

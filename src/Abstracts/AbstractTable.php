@@ -12,7 +12,7 @@ abstract class AbstractTable implements Table
   protected $_name;
   protected $_description;
   protected $_columns = [];
-  protected $_indexes = [];
+  protected $_keys = [];
 
   public function __construct(Database $database, string $name, string $description = '')
   {
@@ -51,21 +51,26 @@ abstract class AbstractTable implements Table
    */
   public function addColumn(Column ...$column): self
   {
-    $this->_columns[] = $column;
+    $this->_columns = array_merge($this->_columns, $column);
     return $this;
   }
 
   /**
    * @return Key[]
    */
-  public function getIndexes(): array
+  public function getKeys(): array
   {
-    return $this->_indexes;
+    return $this->_keys;
   }
 
-  public function addIndex(Key ...$index): self
+  /**
+   * @param Key ...$key
+   *
+   * @return $this
+   */
+  public function addKey(Key ...$key): self
   {
-    $this->_indexes[] = $index;
+    $this->_keys = array_merge($this->_keys, $key);
     return $this;
   }
 }

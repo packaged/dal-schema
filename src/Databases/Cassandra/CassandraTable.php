@@ -11,7 +11,7 @@ class CassandraTable extends AbstractTable
 {
 
   protected $_columns;
-  protected $_indexes;
+  protected $_keys;
 
   /**
    * MySQLTable constructor.
@@ -25,7 +25,7 @@ class CassandraTable extends AbstractTable
   {
     parent::__construct($name, $description);
     $this->_columns = Arrays::instancesOf($columns, CassandraColumn::class);
-    $this->_indexes = Arrays::instancesOf($indexes, CassandraKey::class);
+    $this->_keys = Arrays::instancesOf($indexes, CassandraKey::class);
   }
 
   public function getDatabase(): Database
@@ -44,8 +44,8 @@ class CassandraTable extends AbstractTable
   /**
    * @return CassandraKey[]
    */
-  public function getIndexes(): array
+  public function getKeys(): array
   {
-    return $this->_indexes;
+    return $this->_keys;
   }
 }

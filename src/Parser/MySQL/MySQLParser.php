@@ -68,6 +68,8 @@ class MySQLParser extends AbstractParser
     {
       throw new Exception('Table not found');
     }
+    $table = new MySQLTable($database, $tableName, $schemaResults[0]['TABLE_COMMENT']);
+    $table->setEngine(new MySQLEngine($schemaResults[0]['ENGINE']));
 
     $columnResults = $this->_connection->fetchQueryResults(
       'select COLUMN_NAME,COLUMN_DEFAULT,IS_NULLABLE,DATA_TYPE,COLUMN_TYPE,CHARACTER_SET_NAME,COLLATION_NAME,EXTRA ' .
@@ -78,7 +80,6 @@ class MySQLParser extends AbstractParser
     {
       throw new Exception('Problem reading columns');
     }
-    $columns = [];
     foreach($columnResults as $columnResult)
     {
       if(!preg_match('/^(.+?)(?:\(([0-9,]+)\))?(?: (unsigned))?$/', $columnResult['COLUMN_TYPE'], $colMatches))
@@ -95,20 +96,19 @@ class MySQLParser extends AbstractParser
         $columnResult['CHARACTER_SET_NAME'] ? new MySQLCharacterSet($columnResult['CHARACTER_SET_NAME']) : null,
         $columnResult['COLLATION_NAME'] ? new MySQLCollation($columnResult['COLLATION_NAME']) : null
       );
-      $columns[] = $column;
+      $table->addColumn($column);
     }
 
-    $indexResults = $this->_connection->fetchQueryResults(
+    $keyResults = $this->_connection->fetchQueryResults(
       'select INDEX_NAME,COLUMN_NAME,NON_UNIQUE '
       . 'from information_schema.STATISTICS ' .
       'WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? ORDER BY INDEX_NAME, SEQ_IN_INDEX',
       [$databaseName, $tableName]
     );
-    $indexes = [];
-    if(!empty($indexResults))
+    if(!empty($keyResults))
     {
-      $indexGroup = Arrays::igroup($indexResults, 'INDEX_NAME');
-      foreach($indexGroup as $keyName => $items)
+      $keyGroup = Arrays::igroup($keyResults, 'INDEX_NAME');
+      foreach($keyGroup as $keyName => $items)
       {
         if($keyName === 'PRIMARY')
         {
@@ -123,22 +123,13 @@ class MySQLParser extends AbstractParser
           $type = MySQLKeyType::UNIQUE();
         }
         // todo: fulltext & constraint
-        $indexes[] = new MySQLKey($keyName, $type, ...Arrays::ipull($items, 'COLUMN_NAME'));
+        $table->addKey(new MySQLKey($keyName, $type, ...Arrays::ipull($items, 'COLUMN_NAME')));
       }
     }
 
-    $tableCollation = new MySQLCollation($schemaResults[0]['TABLE_COLLATION']);
-    $tableCharset = new MySQLCharacterSet($schemaResults[0]['character_set_name']);
+    $table->setCollation(new MySQLCollation($schemaResults[0]['TABLE_COLLATION']));
+    $table->setCharacterSet(new MySQLCharacterSet($schemaResults[0]['character_set_name']));
 
-    return new MySQLTable(
-      $database,
-      $tableName,
-      $schemaResults[0]['TABLE_COMMENT'],
-      $columns,
-      $indexes,
-      $tableCollation,
-      $tableCharset,
-      new MySQLEngine($schemaResults[0]['ENGINE'])
-    );
+    return $table;
   }
 }

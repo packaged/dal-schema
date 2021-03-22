@@ -7,7 +7,7 @@ use Packaged\DalSchema\Table;
 
 class TestDao implements DaoSchemaProvider
 {
-  protected $_daoSchema;
+  protected Table $_daoSchema;
 
   public function setDaoSchema(Table $table)
   {

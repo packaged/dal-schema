@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.4",
     "packaged/enum": "^1.4",
     "packaged/dal": "^1.11"
   },

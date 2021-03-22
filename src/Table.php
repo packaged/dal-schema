@@ -17,5 +17,5 @@ interface Table extends Writer
   /**
    * @return Key[]
    */
-  public function getIndexes(): array;
+  public function getKeys(): array;
 }
