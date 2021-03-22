@@ -4,6 +4,7 @@ namespace Packaged\DalSchema\Databases\Mysql;
 use Exception;
 use Packaged\DalSchema\Abstracts\AbstractTable;
 use Packaged\DalSchema\Database;
+use Packaged\DalSchema\Index;
 use Packaged\DalSchema\Writer;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
@@ -13,20 +14,18 @@ class MySQLTable extends AbstractTable
   protected $_collation;
   protected $_charset;
   protected $_engine;
-  protected $_columns;
-  protected $_indexes;
 
   /**
    * MySQLTable constructor.
    *
-   * @param Database          $database
-   * @param string            $name
-   * @param string            $description
-   * @param MySQLColumn[]     $columns
-   * @param MySQLIndex[]      $indexes
-   * @param MySQLCollation    $collation
-   * @param MySQLCharacterSet $charset
-   * @param MySQLEngine|null  $engine
+   * @param Database           $database
+   * @param string             $name
+   * @param string             $description
+   * @param MySQLColumn[]      $columns
+   * @param MySQLIndex[]       $indexes
+   * @param ?MySQLCollation    $collation
+   * @param ?MySQLCharacterSet $charset
+   * @param ?MySQLEngine       $engine
    */
   public function __construct(
     Database $database,
@@ -59,19 +58,16 @@ class MySQLTable extends AbstractTable
   }
 
   /**
-   * @return MySQLColumn[]
-   */
-  public function getColumns(): array
-  {
-    return $this->_columns;
-  }
-
-  /**
    * @return MySQLIndex[]
    */
   public function getIndexes(): array
   {
-    return $this->_indexes;
+    return parent::getIndexes();
+  }
+
+  public function addIndex(Index ...$index): AbstractTable
+  {
+    return parent::addIndex(...Arrays::instancesOf($index, MySQLIndex::class));
   }
 
   public function writerCreate(): string
