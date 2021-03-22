@@ -2,10 +2,10 @@
 namespace Packaged\DalSchema\Databases\Mysql;
 
 use Exception;
-use Packaged\DalSchema\Index;
+use Packaged\DalSchema\Key;
 use Packaged\DalSchema\Writer;
 
-class MySQLIndex implements Index
+class MySQLKey implements Key
 {
   protected $_name;
   protected $_type;

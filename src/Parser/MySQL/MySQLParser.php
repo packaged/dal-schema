@@ -9,7 +9,7 @@ use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumnType;
 use Packaged\DalSchema\Databases\Mysql\MySQLDatabase;
 use Packaged\DalSchema\Databases\Mysql\MySQLEngine;
-use Packaged\DalSchema\Databases\Mysql\MySQLIndex;
+use Packaged\DalSchema\Databases\Mysql\MySQLKey;
 use Packaged\DalSchema\Databases\Mysql\MySQLKeyType;
 use Packaged\DalSchema\Databases\Mysql\MySQLTable;
 use Packaged\DalSchema\Parser\AbstractParser;
@@ -123,7 +123,7 @@ class MySQLParser extends AbstractParser
           $type = MySQLKeyType::UNIQUE();
         }
         // todo: fulltext & constraint
-        $indexes[] = new MySQLIndex($keyName, $type, ...Arrays::ipull($items, 'COLUMN_NAME'));
+        $indexes[] = new MySQLKey($keyName, $type, ...Arrays::ipull($items, 'COLUMN_NAME'));
       }
     }
 

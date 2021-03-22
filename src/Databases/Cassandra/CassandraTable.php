@@ -3,7 +3,7 @@ namespace Packaged\DalSchema\Databases\Cassandra;
 
 use Packaged\DalSchema\Database;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
-use Packaged\DalSchema\Databases\Mysql\MySQLIndex;
+use Packaged\DalSchema\Databases\Mysql\MySQLKey;
 use Packaged\DalSchema\Abstracts\AbstractTable;
 use Packaged\Helpers\Arrays;
 
@@ -19,13 +19,13 @@ class CassandraTable extends AbstractTable
    * @param string        $name
    * @param string        $description
    * @param MySQLColumn[] $columns
-   * @param MySQLIndex[]  $indexes
+   * @param MySQLKey[]    $indexes
    */
   public function __construct(string $name, string $description = '', array $columns = [], array $indexes = [])
   {
     parent::__construct($name, $description);
     $this->_columns = Arrays::instancesOf($columns, CassandraColumn::class);
-    $this->_indexes = Arrays::instancesOf($indexes, CassandraIndex::class);
+    $this->_indexes = Arrays::instancesOf($indexes, CassandraKey::class);
   }
 
   public function getDatabase(): Database
@@ -42,7 +42,7 @@ class CassandraTable extends AbstractTable
   }
 
   /**
-   * @return CassandraIndex[]
+   * @return CassandraKey[]
    */
   public function getIndexes(): array
   {

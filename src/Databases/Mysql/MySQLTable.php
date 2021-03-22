@@ -4,7 +4,7 @@ namespace Packaged\DalSchema\Databases\Mysql;
 use Exception;
 use Packaged\DalSchema\Abstracts\AbstractTable;
 use Packaged\DalSchema\Database;
-use Packaged\DalSchema\Index;
+use Packaged\DalSchema\Key;
 use Packaged\DalSchema\Writer;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
@@ -22,7 +22,7 @@ class MySQLTable extends AbstractTable
    * @param string             $name
    * @param string             $description
    * @param MySQLColumn[]      $columns
-   * @param MySQLIndex[]       $indexes
+   * @param MySQLKey[]         $indexes
    * @param ?MySQLCollation    $collation
    * @param ?MySQLCharacterSet $charset
    * @param ?MySQLEngine       $engine
@@ -39,7 +39,7 @@ class MySQLTable extends AbstractTable
     $this->_charset = $charset;
     $this->_engine = $engine ?: MySQLEngine::INNODB();
     $this->_columns = Arrays::instancesOf($columns, MySQLColumn::class);
-    $this->_indexes = Arrays::instancesOf($indexes, MySQLIndex::class);
+    $this->_indexes = Arrays::instancesOf($indexes, MySQLKey::class);
   }
 
   public function getCollation(): ?MySQLCollation
@@ -58,16 +58,16 @@ class MySQLTable extends AbstractTable
   }
 
   /**
-   * @return MySQLIndex[]
+   * @return MySQLKey[]
    */
   public function getIndexes(): array
   {
     return parent::getIndexes();
   }
 
-  public function addIndex(Index ...$index): AbstractTable
+  public function addIndex(Key ...$index): AbstractTable
   {
-    return parent::addIndex(...Arrays::instancesOf($index, MySQLIndex::class));
+    return parent::addIndex(...Arrays::instancesOf($index, MySQLKey::class));
   }
 
   public function writerCreate(): string
@@ -151,9 +151,9 @@ class MySQLTable extends AbstractTable
     }
 
     // indexes
-    /** @var MySQLIndex[] $newIndexes */
+    /** @var MySQLKey[] $newIndexes */
     $newIndexes = Objects::mpull($this->getIndexes(), null, 'getName');
-    /** @var MySQLIndex[] $oldIndexes */
+    /** @var MySQLKey[] $oldIndexes */
     $oldIndexes = Objects::mpull($old->getIndexes(), null, 'getName');
     foreach($newIndexes as $idx)
     {

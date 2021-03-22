@@ -3,7 +3,7 @@ namespace Packaged\DalSchema\Abstracts;
 
 use Packaged\DalSchema\Column;
 use Packaged\DalSchema\Database;
-use Packaged\DalSchema\Index;
+use Packaged\DalSchema\Key;
 use Packaged\DalSchema\Table;
 
 abstract class AbstractTable implements Table
@@ -56,14 +56,14 @@ abstract class AbstractTable implements Table
   }
 
   /**
-   * @return Index[]
+   * @return Key[]
    */
   public function getIndexes(): array
   {
     return $this->_indexes;
   }
 
-  public function addIndex(Index ...$index): self
+  public function addIndex(Key ...$index): self
   {
     $this->_indexes[] = $index;
     return $this;

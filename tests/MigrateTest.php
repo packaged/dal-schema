@@ -10,7 +10,7 @@ use Packaged\DalSchema\Databases\Mysql\MySQLCollation;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumnType;
 use Packaged\DalSchema\Databases\Mysql\MySQLDatabase;
-use Packaged\DalSchema\Databases\Mysql\MySQLIndex;
+use Packaged\DalSchema\Databases\Mysql\MySQLKey;
 use Packaged\DalSchema\Databases\Mysql\MySQLKeyType;
 use Packaged\DalSchema\Databases\Mysql\MySQLTable;
 use Packaged\DalSchema\Parser\MySQL\MySQLParser;
@@ -49,7 +49,7 @@ class MigrateTest extends TestCase
           new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
         ],
         [
-          new MySQLIndex('my_pk', MySQLKeyType::PRIMARY(), 'id'),
+          new MySQLKey('my_pk', MySQLKeyType::PRIMARY(), 'id'),
         ],
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
       )
@@ -107,8 +107,8 @@ class MigrateTest extends TestCase
           new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
         ],
         [
-          new MySQLIndex('my_pk', MySQLKeyType::PRIMARY(), 'id'),
-          new MySQLIndex('f1_idx', MySQLKeyType::INDEX(), 'field1'),
+          new MySQLKey('my_pk', MySQLKeyType::PRIMARY(), 'id'),
+          new MySQLKey('f1_idx', MySQLKeyType::INDEX(), 'field1'),
         ],
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
       )
@@ -137,7 +137,7 @@ class MigrateTest extends TestCase
           new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
         ],
         [
-          new MySQLIndex('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
+          new MySQLKey('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
         ],
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
       )
@@ -165,7 +165,7 @@ class MigrateTest extends TestCase
           new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
         ],
         [
-          new MySQLIndex('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
+          new MySQLKey('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
         ],
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
       )
