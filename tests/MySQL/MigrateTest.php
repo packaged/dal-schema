@@ -11,7 +11,6 @@ use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumnType;
 use Packaged\DalSchema\Databases\Mysql\MySQLDatabase;
 use Packaged\DalSchema\Databases\Mysql\MySQLKey;
-use Packaged\DalSchema\Databases\Mysql\MySQLKeyType;
 use Packaged\DalSchema\Databases\Mysql\MySQLTable;
 use Packaged\DalSchema\Parser\MySQL\MySQLParser;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +42,7 @@ class MigrateTest extends TestCase
         new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
         new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
       )->addKey(
-        new MySQLKey('my_pk', MySQLKeyType::PRIMARY(), 'id')
+        MySQLKey::primary('my_pk', 'id')
       )
       ->setCollation(
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
@@ -90,7 +89,7 @@ class MigrateTest extends TestCase
     self::assertEmpty($checkTable->writerAlter($checkTable));
 
     // --- migration: add index
-    $tblSchema->addKey(new MySQLKey('f1_idx', MySQLKeyType::INDEX(), 'field1', 'field2'));
+    $tblSchema->addKey(MySQLKey::index('f1_idx', 'field1', 'field2'));
 
     $alterTableQuery = $tblSchema->writerAlter($checkTable);
     self::assertEquals(
@@ -109,8 +108,8 @@ class MigrateTest extends TestCase
         new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
         new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
       )->addKey(
-        new MySQLKey('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
-        new MySQLKey('f1_idx', MySQLKeyType::INDEX(), 'field1', 'field2')
+        MySQLKey::primary('my_pk', 'field1'),
+        MySQLKey::index('f1_idx', 'field1', 'field2')
       )
       ->setCollation(
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
@@ -134,7 +133,7 @@ class MigrateTest extends TestCase
         new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
       )
       ->addKey(
-        new MySQLKey('my_pk', MySQLKeyType::PRIMARY(), 'field1'),
+        MySQLKey::primary('my_pk', 'field1'),
       )
       ->setCollation(
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)

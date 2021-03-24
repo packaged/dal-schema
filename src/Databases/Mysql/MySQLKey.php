@@ -18,6 +18,26 @@ class MySQLKey implements Key
     $this->_columns = $columnNames;
   }
 
+  public static function index(string $name, string ...$columnNames): self
+  {
+    return new static($name, MySQLKeyType::INDEX(), ...$columnNames);
+  }
+
+  public static function primary(string $name, string ...$columnNames): self
+  {
+    return new static($name, MySQLKeyType::PRIMARY(), ...$columnNames);
+  }
+
+  public static function unique(string $name, string ...$columnNames): self
+  {
+    return new static($name, MySQLKeyType::UNIQUE(), ...$columnNames);
+  }
+
+  public static function fulltext(string $name, string ...$columnNames): self
+  {
+    return new static($name, MySQLKeyType::FULLTEXT(), ...$columnNames);
+  }
+
   public function getName(): string
   {
     if($this->getType()->is(MySQLKeyType::PRIMARY()))
