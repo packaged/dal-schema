@@ -2,7 +2,7 @@
 
 namespace Packaged\DalSchema;
 
-interface DaoSchemaProvider
+interface DalSchemaProvider
 {
   public function getDaoSchema(): Table;
 }

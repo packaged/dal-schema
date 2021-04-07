@@ -14,6 +14,11 @@ abstract class AbstractTable implements Table
   protected $_columns = [];
   protected $_keys = [];
 
+  public static function i(Database $database, string $name, string $description = ''): self
+  {
+    return new static($database, $name, $description = '');
+  }
+
   public function __construct(Database $database, string $name, string $description = '')
   {
     $this->_database = $database;

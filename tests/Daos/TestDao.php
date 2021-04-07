@@ -2,10 +2,10 @@
 
 namespace Packaged\Tests\DalSchema\Daos;
 
-use Packaged\DalSchema\DaoSchemaProvider;
+use Packaged\DalSchema\DalSchemaProvider;
 use Packaged\DalSchema\Table;
 
-class TestDao implements DaoSchemaProvider
+class TestDao implements DalSchemaProvider
 {
   protected Table $_daoSchema;
 
