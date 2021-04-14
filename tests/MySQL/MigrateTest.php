@@ -44,11 +44,10 @@ class MigrateTest extends TestCase
       ->setCollation(
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
       );
-    $dbSchema = $tblSchema->getDatabase();
+
     DalSchema::migrate($this->_conn, $tblSchema);
 
     $parser = new MySQLParser($this->_conn);
-
     $current = $parser->parseTable($tblSchema->getDatabase()->getName(), $tblSchema->getName());
     self::assertEmpty($tblSchema->writerAlter($current));
   }
