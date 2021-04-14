@@ -9,7 +9,7 @@ interface Parser
    *
    * @return Database
    */
-  public function parseDatabase(string $name);
+  public function parseDatabase(string $name): ?Database;
 
   /**
    * @param string $databaseName
@@ -17,5 +17,5 @@ interface Parser
    *
    * @return Table
    */
-  public function parseTable(string $databaseName, string $tableName);
+  public function parseTable(string $databaseName, string $tableName): ?Table;
 }

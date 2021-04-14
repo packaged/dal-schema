@@ -6,6 +6,7 @@ use Exception;
 use Packaged\Dal\DalResolver;
 use Packaged\Dal\Exceptions\Connection\ConnectionException;
 use Packaged\Dal\Ql\MySQLiConnection;
+use Packaged\DalSchema\DalSchema;
 use Packaged\DalSchema\Databases\Mysql\MySQLCollation;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumn;
 use Packaged\DalSchema\Databases\Mysql\MySQLColumnType;
@@ -30,11 +31,33 @@ class MigrateTest extends TestCase
     $this->_testDb = new MySQLDatabase('test_db', null, null);
   }
 
+  public function testMigrate()
+  {
+    $tblSchema = (new MySQLTable($this->_testDb, 'test_table_migrate', 'my test table'))
+      ->addColumn(
+        new MySQLColumn('id', MySQLColumnType::INT_UNSIGNED(), null, false, null, MySQLColumn::EXTRA_AUTO_INCREMENT),
+        new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
+        new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
+      )->addKey(
+        MySQLKey::primary('my_pk', 'id')
+      )
+      ->setCollation(
+        new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
+      );
+    $dbSchema = $tblSchema->getDatabase();
+    DalSchema::migrate($this->_conn, $tblSchema);
+
+    $parser = new MySQLParser($this->_conn);
+
+    $current = $parser->parseTable($tblSchema->getDatabase()->getName(), $tblSchema->getName());
+    self::assertEmpty($tblSchema->writerAlter($current));
+  }
+
   /**
    * @throws ConnectionException
    * @throws Exception
    */
-  public function testMigration1()
+  public function testManualMigration()
   {
     $tblSchema = (new MySQLTable($this->_testDb, 'test_table', 'my test table'))
       ->addColumn(

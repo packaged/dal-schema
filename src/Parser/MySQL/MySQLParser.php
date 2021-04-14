@@ -27,7 +27,7 @@ class MySQLParser extends AbstractParser
    * @return MySQLDatabase
    * @throws Exception
    */
-  public function parseDatabase(string $name)
+  public function parseDatabase(string $name): ?MySQLDatabase
   {
     $results = $this->_connection->fetchQueryResults(
       'select DEFAULT_CHARACTER_SET_NAME,DEFAULT_COLLATION_NAME '
@@ -36,8 +36,9 @@ class MySQLParser extends AbstractParser
     );
     if(empty($results))
     {
-      throw new Exception('Database not found');
+      return null;
     }
+
     return new MySQLDatabase(
       $name,
       new MySQLCollation($results[0]['DEFAULT_COLLATION_NAME']),
@@ -66,8 +67,9 @@ class MySQLParser extends AbstractParser
     );
     if(empty($schemaResults))
     {
-      throw new Exception('Table not found');
+      return null;
     }
+
     $table = new MySQLTable($database, $tableName, $schemaResults[0]['TABLE_COMMENT']);
     $table->setEngine(new MySQLEngine($schemaResults[0]['ENGINE']));
 
