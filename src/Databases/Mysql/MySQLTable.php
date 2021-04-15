@@ -4,7 +4,6 @@ namespace Packaged\DalSchema\Databases\Mysql;
 use Exception;
 use Packaged\DalSchema\Abstracts\AbstractTable;
 use Packaged\DalSchema\Column;
-use Packaged\DalSchema\Database;
 use Packaged\DalSchema\Key;
 use Packaged\DalSchema\Writer;
 use Packaged\Helpers\Arrays;
@@ -19,13 +18,12 @@ class MySQLTable extends AbstractTable
   /**
    * MySQLTable constructor.
    *
-   * @param Database $database
-   * @param string   $name
-   * @param string   $description
+   * @param string $name
+   * @param string $description
    */
-  public function __construct(Database $database, string $name, string $description = '')
+  public function __construct(string $name, string $description = '')
   {
-    parent::__construct($database, $name, $description);
+    parent::__construct($name, $description);
     $this->_engine = MySQLEngine::INNODB();
   }
 
@@ -103,8 +101,8 @@ class MySQLTable extends AbstractTable
       $tableOpts[] = 'COLLATE ' . $collation;
     }
 
-    return 'CREATE TABLE `' . $this->getDatabase()->getName() . '`.`' . $this->getName()
-      . '` (' . implode(
+    return 'CREATE TABLE `' . $this->getName() . '`'
+      . ' (' . implode(
         ', ',
         array_merge(
           Objects::mpull($this->getColumns(), 'writerCreate'),
@@ -187,7 +185,7 @@ class MySQLTable extends AbstractTable
 
     if($parts)
     {
-      return 'ALTER TABLE `' . $this->_database->getName() . '`.`' . $this->getName() . '` ' . implode(', ', $parts);
+      return 'ALTER TABLE `' . $this->getName() . '` ' . implode(', ', $parts);
     }
     return '';
   }

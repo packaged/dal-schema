@@ -70,7 +70,7 @@ class MySQLParser extends AbstractParser
       return null;
     }
 
-    $table = new MySQLTable($database, $tableName, $schemaResults[0]['TABLE_COMMENT']);
+    $table = new MySQLTable($tableName, $schemaResults[0]['TABLE_COMMENT']);
     $table->setEngine(new MySQLEngine($schemaResults[0]['ENGINE']));
 
     $columnResults = $this->_connection->fetchQueryResults(

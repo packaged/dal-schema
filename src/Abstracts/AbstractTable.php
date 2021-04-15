@@ -2,33 +2,25 @@
 namespace Packaged\DalSchema\Abstracts;
 
 use Packaged\DalSchema\Column;
-use Packaged\DalSchema\Database;
 use Packaged\DalSchema\Key;
 use Packaged\DalSchema\Table;
 
 abstract class AbstractTable implements Table
 {
-  protected $_database;
   protected $_name;
   protected $_description;
   protected $_columns = [];
   protected $_keys = [];
 
-  public static function i(Database $database, string $name, string $description = ''): self
+  public static function i(string $name, string $description = ''): self
   {
-    return new static($database, $name, $description = '');
+    return new static($name, $description = '');
   }
 
-  public function __construct(Database $database, string $name, string $description = '')
+  public function __construct(string $name, string $description = '')
   {
-    $this->_database = $database;
     $this->_name = $name;
     $this->_description = $description;
-  }
-
-  public function getDatabase(): Database
-  {
-    return $this->_database;
   }
 
   public function getName(): string

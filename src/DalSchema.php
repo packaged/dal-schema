@@ -3,8 +3,8 @@
 namespace Packaged\DalSchema;
 
 use Packaged\Dal\Ql\IQLDataConnection;
-use Packaged\DalSchema\Databases\Cassandra\CassandraKeyspace;
 use Packaged\DalSchema\Databases\Mysql\MySQLDatabase;
+use Packaged\DalSchema\Databases\Mysql\MySQLTable;
 use Packaged\Helpers\Path;
 use ReflectionClass;
 
@@ -31,11 +31,11 @@ class DalSchema
     return $files;
   }
 
-  public static function migrate(IQLDataConnection $connection, Table ...$tables)
+  public static function migrateDatabases(IQLDataConnection $connection, Database ...$databases)
   {
-    $getParser = static function (Database $db) use ($connection) {
+    $getParser = static function (Database $database) use ($connection): ?Parser {
       static $parsers = [];
-      if($db instanceof MySQLDatabase)
+      if($database instanceof MySQLTable)
       {
         if(!isset($parsers['mysql']))
         {
@@ -43,32 +43,57 @@ class DalSchema
         }
         return $parsers['mysql'];
       }
-      else if($db instanceof CassandraKeyspace)
-      {
-        if(!isset($parsers['cassandra']))
-        {
-          $parsers['cassandra'] = new Parser\MySQL\MySQLParser($connection);
-        }
-        return $parsers['cassandra'];
-      }
-      throw new \Exception('unsupported database type');
+      return null;
     };
 
-    //todo: check foreign key dependencies, reorder accordingly
-    foreach($tables as $table)
+    foreach($databases as $db)
     {
+      if($db instanceof MySQLDatabase)
+      {
+        $parser = new Parser\MySQL\MySQLParser($connection);
+      }
+      else
+      {
+        throw new \Exception('unsupported database type');
+      };
+
       // check db
-      $db = $table->getDatabase();
-      $parser = $getParser($db);
       $currentDb = $parser->parseDatabase($db->getName());
       $dbQuery = $currentDb ? $db->writerAlter($currentDb) : $db->writerCreate();
       if($dbQuery)
       {
         $connection->runQuery($dbQuery);
       }
+    }
+  }
+
+  public static function migrateTables(IQLDataConnection $connection, string $dbName, Table ...$tables)
+  {
+    $getParser = static function (Table $table) use ($connection): ?Parser {
+      static $parsers = [];
+      if($table instanceof MySQLTable)
+      {
+        if(!isset($parsers['mysql']))
+        {
+          $parsers['mysql'] = new Parser\MySQL\MySQLParser($connection);
+        }
+        return $parsers['mysql'];
+      }
+      return null;
+    };
+
+    //todo: check foreign key dependencies, reorder accordingly
+
+    foreach($tables as $table)
+    {
+      $parser = $getParser($table);
+      if($parser === null)
+      {
+        throw new \Exception('unsupported table type');
+      }
 
       // check table
-      $currentTable = $parser->parseTable($db->getName(), $table->getName());
+      $currentTable = $parser->parseTable($dbName, $table->getName());
       $dbQuery = $currentTable ? $table->writerAlter($currentTable) : $table->writerCreate();
       if($dbQuery)
       {

@@ -27,13 +27,13 @@ class MigrateTest extends TestCase
     $this->_conn = new MySQLiConnection();
     //todo: why do we need to set this?
     $this->_conn->setResolver(new DalResolver());
-
+    $this->_conn->getConfig()->addItem('database', 'test_db');
     $this->_testDb = new MySQLDatabase('test_db', null, null);
   }
 
   public function testMigrate()
   {
-    $tblSchema = (new MySQLTable($this->_testDb, 'test_table_migrate', 'my test table'))
+    $tblSchema = (new MySQLTable('test_table_migrate', 'my test table'))
       ->addColumn(
         new MySQLColumn('id', MySQLColumnType::INT_UNSIGNED(), null, false, null, MySQLColumn::EXTRA_AUTO_INCREMENT),
         new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
@@ -45,10 +45,10 @@ class MigrateTest extends TestCase
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
       );
 
-    DalSchema::migrate($this->_conn, $tblSchema);
+    DalSchema::migrateTables($this->_conn, $this->_testDb->getName(), $tblSchema);
 
     $parser = new MySQLParser($this->_conn);
-    $current = $parser->parseTable($tblSchema->getDatabase()->getName(), $tblSchema->getName());
+    $current = $parser->parseTable($this->_testDb->getName(), $tblSchema->getName());
     self::assertEmpty($tblSchema->writerAlter($current));
   }
 
@@ -58,7 +58,7 @@ class MigrateTest extends TestCase
    */
   public function testManualMigration()
   {
-    $tblSchema = (new MySQLTable($this->_testDb, 'test_table', 'my test table'))
+    $tblSchema = (new MySQLTable('test_table', 'my test table'))
       ->addColumn(
         new MySQLColumn('id', MySQLColumnType::INT_UNSIGNED(), null, false, null, MySQLColumn::EXTRA_AUTO_INCREMENT),
         new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
@@ -70,7 +70,7 @@ class MigrateTest extends TestCase
         new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI)
       );
 
-    $dbSchema = $tblSchema->getDatabase();
+    $dbSchema = $this->_testDb;
     $this->_conn->runQuery(
       'DROP TABLE IF EXISTS `' . $dbSchema->getName() . '`.`' . $tblSchema->getName() . '`'
     );
@@ -93,11 +93,12 @@ class MigrateTest extends TestCase
     $createDbQuery = $dbSchema->writerCreate(true);
     self::assertEquals('CREATE DATABASE IF NOT EXISTS `test_db`', $createDbQuery);
     $this->_conn->runQuery($createDbQuery);
+    $this->_conn->_switchDatabase('test_db');
 
     // create table
     $createTableQuery = $tblSchema->writerCreate();
     self::assertEquals(
-      'CREATE TABLE `test_db`.`test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, PRIMARY KEY (`id`)) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+      'CREATE TABLE `test_table` (`id` int(10) unsigned NOT NULL auto_increment, `field1` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `field2` tinyint(3) unsigned NOT NULL, PRIMARY KEY (`id`)) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci',
       $createTableQuery
     );
 
@@ -115,7 +116,7 @@ class MigrateTest extends TestCase
 
     $alterTableQuery = $tblSchema->writerAlter($checkTable);
     self::assertEquals(
-      'ALTER TABLE `test_db`.`test_table` ADD INDEX `f1_idx` (`field1`,`field2`)',
+      'ALTER TABLE `test_table` ADD INDEX `f1_idx` (`field1`,`field2`)',
       $alterTableQuery
     );
     $this->_conn->runQuery($alterTableQuery);
@@ -124,7 +125,7 @@ class MigrateTest extends TestCase
     self::assertEmpty($checkTable->writerAlter($checkTable));
 
     // --- migration: change primary key
-    $tblSchema = (new MySQLTable($this->_testDb, 'test_table', 'my test table'))
+    $tblSchema = (new MySQLTable('test_table', 'my test table'))
       ->addColumn(
         new MySQLColumn('id', MySQLColumnType::INT_UNSIGNED()),
         new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
@@ -139,7 +140,7 @@ class MigrateTest extends TestCase
 
     $alterTableQuery = $tblSchema->writerAlter($checkTable);
     self::assertEquals(
-      'ALTER TABLE `test_db`.`test_table` CHANGE COLUMN `id` `id` int(10) unsigned NOT NULL, DROP PRIMARY KEY, ADD PRIMARY KEY (`field1`)',
+      'ALTER TABLE `test_table` CHANGE COLUMN `id` `id` int(10) unsigned NOT NULL, DROP PRIMARY KEY, ADD PRIMARY KEY (`field1`)',
       $alterTableQuery
     );
     $this->_conn->runQuery($alterTableQuery);
@@ -149,7 +150,7 @@ class MigrateTest extends TestCase
 
     // --- migration: drop old primary key
 
-    $tblSchema = (new MySQLTable($this->_testDb, 'test_table', 'my test table'))
+    $tblSchema = (new MySQLTable('test_table', 'my test table'))
       ->addColumn(
         new MySQLColumn('field1', MySQLColumnType::VARCHAR(), 50),
         new MySQLColumn('field2', MySQLColumnType::TINY_INT_UNSIGNED()),
@@ -163,7 +164,7 @@ class MigrateTest extends TestCase
 
     $alterTableQuery = $tblSchema->writerAlter($checkTable);
     self::assertEquals(
-      'ALTER TABLE `test_db`.`test_table` DROP COLUMN `id`',
+      'ALTER TABLE `test_table` DROP COLUMN `id`',
       $alterTableQuery
     );
     $this->_conn->runQuery($alterTableQuery);
