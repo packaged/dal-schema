@@ -93,7 +93,7 @@ class MigrateTest extends TestCase
     $createDbQuery = $dbSchema->writerCreate(true);
     self::assertEquals('CREATE DATABASE IF NOT EXISTS `test_db`', $createDbQuery);
     $this->_conn->runQuery($createDbQuery);
-    $this->_conn->_switchDatabase('test_db');
+    $this->_conn->switchDatabase('test_db');
 
     // create table
     $createTableQuery = $tblSchema->writerCreate();
