@@ -120,7 +120,7 @@ class MySQLTable extends AbstractTable
    */
   public function writerAlter(Writer $old): string
   {
-    if(!$old instanceof static)
+    if(!$old instanceof self)
     {
       throw new Exception('unexpected type provided to alter');
     }
