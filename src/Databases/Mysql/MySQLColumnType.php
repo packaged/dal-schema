@@ -8,6 +8,7 @@ use function str_replace;
  * Class MySQLColumnType
  *
  * @method static MySQLColumnType DATE
+ * @method static MySQLColumnType DATETIME
  * @method static MySQLColumnType SQL_DATE
  * @method static MySQLColumnType ID
  * @method static MySQLColumnType FID
@@ -42,6 +43,7 @@ use function str_replace;
 class MySQLColumnType extends AbstractEnum
 {
   private const DATE = 'date';
+  private const DATETIME = 'datetime';
   private const SQL_DATE = 'realdate';
   private const ID = 'id';
   private const FID = 'fid';
