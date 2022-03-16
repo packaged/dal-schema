@@ -106,7 +106,6 @@ class MySQLColumnType extends AbstractEnum
   {
     switch($this->getValue())
     {
-      case self::DATE:
       case self::INT_UNSIGNED:
       case self::MEDIUM_INT_UNSIGNED:
       case self::BIG_INT_UNSIGNED:
@@ -136,7 +135,6 @@ class MySQLColumnType extends AbstractEnum
       case self::INT_UNSIGNED:
       case self::INT_SIGNED:
       case self::ID:
-      case self::DATE:
         return 10;
       case self::TINY_INT_UNSIGNED:
       case self::TINY_INT:
