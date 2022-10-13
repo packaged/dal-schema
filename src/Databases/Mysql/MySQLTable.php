@@ -149,7 +149,7 @@ class MySQLTable extends AbstractTable
       }
       else
       {
-        $parts[] = $col->writerCreate();
+        $parts[] = "ADD COLUMN " . $col->writerCreate();
       }
     }
     $removeCols = array_diff_key($oldCols, $newCols);
