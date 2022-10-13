@@ -145,8 +145,6 @@ class MySQLColumnType extends AbstractEnum
       case self::SMALL_INT_UNSIGNED:
       case self::SMALL_INT:
         return 6;
-      case self::BOOL:
-        return 1;
       case self::FID:
         return 64;
       case self::VARCHAR:
