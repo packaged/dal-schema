@@ -76,7 +76,7 @@ class MySQLColumnType extends AbstractEnum
 
   public function getType()
   {
-    return str_replace('unsigned', '', $this->getValue());
+    return str_replace(['unsigned', '_mb4'], '', $this->getValue());
   }
 
   public function isInt(): bool
