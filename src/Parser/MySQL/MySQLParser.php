@@ -116,7 +116,7 @@ class MySQLParser extends AbstractParser
         {
           $type = MySQLKeyType::PRIMARY();
         }
-        else if(ValueAs::bool(Arrays::value($items[0], 'NON_UNIQUE')))
+        else if(ValueAs::bool(Arrays::value(reset($items), 'NON_UNIQUE')))
         {
           $type = MySQLKeyType::INDEX();
         }
