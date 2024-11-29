@@ -19,9 +19,10 @@ class MySQLColumn extends AbstractColumn
   protected $_signed;
 
   public function __construct(
-    string $name, MySQLColumnType $type, $size = null, bool $nullable = false, $default = null, $extra = null,
+    string            $name, MySQLColumnType $type, $size = null, bool $nullable = false, $default = null,
+                      $extra = null,
     MySQLCharacterSet $characterSet = null,
-    MySQLCollation $collation = null
+    MySQLCollation    $collation = null
   )
   {
     $this->_setName($name);
@@ -57,6 +58,14 @@ class MySQLColumn extends AbstractColumn
    */
   public function getSize()
   {
+    switch($this->_type)
+    {
+      case MySQLColumnType::BOOL():
+      case MySQLColumnType::DATE():
+      case MySQLColumnType::DATETIME():
+      case MySQLColumnType::SQL_DATE():
+        return 0;
+    }
     return $this->_size;
   }
 

@@ -130,6 +130,8 @@ class DalSchema
           }
           catch(\Throwable $e)
           {
+            // These exceptions need to be handled
+            throw $e;
           }
         }
       }
