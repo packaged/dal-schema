@@ -76,7 +76,13 @@ class MySQLColumnType extends AbstractEnum
 
   public function getType()
   {
-    return str_replace(['unsigned', '_mb4'], '', $this->getValue());
+    switch($this->getValue())
+    {
+      case self::FID:
+        return self::VARCHAR;
+      default:
+        return str_replace(['unsigned', '_mb4'], '', $this->getValue());
+    }
   }
 
   public function isInt(): bool
