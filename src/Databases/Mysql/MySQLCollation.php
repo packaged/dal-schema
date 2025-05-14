@@ -230,6 +230,7 @@ class MySQLCollation extends AbstractEnum
   const GB18030_CHINESE_CI = 'gb18030_chinese_ci';
   const GB18030_BIN = 'gb18030_bin';
   const GB18030_UNICODE_520_CI = 'gb18030_unicode_520_ci';
+  const UTF8MB4_0900_AI_CI = "utf8mb4_0900_ai_ci";
 
   public function getChatacterSet(): ?MySQLCharacterSet
   {
@@ -412,6 +413,7 @@ class MySQLCollation extends AbstractEnum
       case self::UTF8MB4_CROATIAN_CI:
       case self::UTF8MB4_UNICODE_520_CI:
       case self::UTF8MB4_VIETNAMESE_CI:
+      case self::UTF8MB4_0900_AI_CI:
         return new MySQLCharacterSet(MySQLCharacterSet::UTF8MB4);
       case self::CP1251_BULGARIAN_CI:
       case self::CP1251_UKRAINIAN_CI:
