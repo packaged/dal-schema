@@ -339,6 +339,10 @@ class MySQLCollation extends AbstractEnum
       case self::UTF8_UNICODE_520_CI:
       case self::UTF8_VIETNAMESE_CI:
       case self::UTF8_GENERAL_MYSQL500_CI:
+        return new MySQLCharacterSet(MySQLCharacterSet::UTF8);
+      case self::UTF8MB3_BIN:
+      case self::UTF8MB3_GENERAL_CI:
+      case self::UTF8MB3_UNICODE_CI:
         return new MySQLCharacterSet(MySQLCharacterSet::UTF8MB3);
       case self::UCS2_GENERAL_CI:
       case self::UCS2_BIN:

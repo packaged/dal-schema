@@ -5,47 +5,48 @@ use Packaged\Enum\AbstractEnum;
 
 class MySQLCharacterSet extends AbstractEnum
 {
-  CONST BIG5 = 'big5';
-  CONST DEC8 = 'dec8';
-  CONST CP850 = 'cp850';
-  CONST HP8 = 'hp8';
-  CONST KOI8R = 'koi8r';
-  CONST LATIN1 = 'latin1';
-  CONST LATIN2 = 'latin2';
-  CONST SWE7 = 'swe7';
-  CONST ASCII = 'ascii';
-  CONST UJIS = 'ujis';
-  CONST SJIS = 'sjis';
-  CONST HEBREW = 'hebrew';
-  CONST TIS620 = 'tis620';
-  CONST EUCKR = 'euckr';
-  CONST KOI8U = 'koi8u';
-  CONST GB2312 = 'gb2312';
-  CONST GREEK = 'greek';
-  CONST CP1250 = 'cp1250';
-  CONST GBK = 'gbk';
-  CONST LATIN5 = 'latin5';
-  CONST ARMSCII8 = 'armscii8';
-  CONST UTF8MB3 = 'utf8mb3';
-  CONST UCS2 = 'ucs2';
-  CONST CP866 = 'cp866';
-  CONST KEYBCS2 = 'keybcs2';
-  CONST MACCE = 'macce';
-  CONST MACROMAN = 'macroman';
-  CONST CP852 = 'cp852';
-  CONST LATIN7 = 'latin7';
-  CONST UTF8MB4 = 'utf8mb4';
-  CONST CP1251 = 'cp1251';
-  CONST UTF16 = 'utf16';
-  CONST UTF16LE = 'utf16le';
-  CONST CP1256 = 'cp1256';
-  CONST CP1257 = 'cp1257';
-  CONST UTF32 = 'utf32';
-  CONST BINARY = 'binary';
-  CONST GEOSTD8 = 'geostd8';
-  CONST CP932 = 'cp932';
-  CONST EUCJPMS = 'eucjpms';
-  CONST GB18030 = 'gb18030';
+  const BIG5 = 'big5';
+  const DEC8 = 'dec8';
+  const CP850 = 'cp850';
+  const HP8 = 'hp8';
+  const KOI8R = 'koi8r';
+  const LATIN1 = 'latin1';
+  const LATIN2 = 'latin2';
+  const SWE7 = 'swe7';
+  const ASCII = 'ascii';
+  const UJIS = 'ujis';
+  const SJIS = 'sjis';
+  const HEBREW = 'hebrew';
+  const TIS620 = 'tis620';
+  const EUCKR = 'euckr';
+  const KOI8U = 'koi8u';
+  const GB2312 = 'gb2312';
+  const GREEK = 'greek';
+  const CP1250 = 'cp1250';
+  const GBK = 'gbk';
+  const LATIN5 = 'latin5';
+  const ARMSCII8 = 'armscii8';
+  const UTF8 = 'utf8';
+  const UTF8MB3 = 'utf8mb3';
+  const UCS2 = 'ucs2';
+  const CP866 = 'cp866';
+  const KEYBCS2 = 'keybcs2';
+  const MACCE = 'macce';
+  const MACROMAN = 'macroman';
+  const CP852 = 'cp852';
+  const LATIN7 = 'latin7';
+  const UTF8MB4 = 'utf8mb4';
+  const CP1251 = 'cp1251';
+  const UTF16 = 'utf16';
+  const UTF16LE = 'utf16le';
+  const CP1256 = 'cp1256';
+  const CP1257 = 'cp1257';
+  const UTF32 = 'utf32';
+  const BINARY = 'binary';
+  const GEOSTD8 = 'geostd8';
+  const CP932 = 'cp932';
+  const EUCJPMS = 'eucjpms';
+  const GB18030 = 'gb18030';
 
   public static function getDisplayValue($value)
   {
@@ -93,6 +94,7 @@ class MySQLCharacterSet extends AbstractEnum
         return 'ISO 8859-9 Turkish';
       case self::ARMSCII8:
         return 'ARMSCII-8 Armenian';
+      case self::UTF8:
       case self::UTF8MB3:
         return 'UTF-8 Unicode';
       case self::UCS2:
@@ -183,7 +185,7 @@ class MySQLCharacterSet extends AbstractEnum
         return new MySQLCollation(MySQLCollation::LATIN5_TURKISH_CI);
       case self::ARMSCII8:
         return new MySQLCollation(MySQLCollation::ARMSCII8_GENERAL_CI);
-      case self::UTF8MB3:
+      case self::UTF8:
         return new MySQLCollation(MySQLCollation::UTF8MB3_GENERAL_CI);
       case self::UCS2:
         return new MySQLCollation(MySQLCollation::UCS2_GENERAL_CI);

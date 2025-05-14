@@ -163,7 +163,7 @@ class MySQLColumnType extends AbstractEnum
     switch($this->getValue())
     {
       case self::FID:
-        return new MySQLCollation(MySQLCollation::UTF8_BIN);
+        return new MySQLCollation(MySQLCollation::UTF8MB3_BIN);
       case self::VARCHAR:
       case self::TEXT:
       case self::MEDIUMTEXT:
