@@ -6,7 +6,6 @@ use function str_replace;
 
 /**
  * Class MySQLColumnType
- *
  * @method static MySQLColumnType DATE
  * @method static MySQLColumnType DATETIME
  * @method static MySQLColumnType SQL_DATE
@@ -38,7 +37,6 @@ use function str_replace;
  * @method static MySQLColumnType BLOB
  * @method static MySQLColumnType LONGBLOB
  * @method static MySQLColumnType MONEY
- *
  */
 class MySQLColumnType extends AbstractEnum
 {
@@ -167,11 +165,10 @@ class MySQLColumnType extends AbstractEnum
       case self::FID:
         return new MySQLCollation(MySQLCollation::UTF8_BIN);
       case self::VARCHAR:
-        return new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI);
       case self::TEXT:
       case self::MEDIUMTEXT:
       case self::LONGTEXT:
-        return new MySQLCollation(MySQLCollation::UTF8_UNICODE_CI);
+        return new MySQLCollation(MySQLCollation::UTF8MB3_UNICODE_CI);
       case self::VARCHAR_MB4:
       case self::TEXT_MB4:
       case self::MEDIUMTEXT_MB4:
@@ -190,7 +187,7 @@ class MySQLColumnType extends AbstractEnum
       case self::TEXT:
       case self::MEDIUMTEXT:
       case self::LONGTEXT:
-        return new MySQLCharacterSet(MySQLCharacterSet::UTF8);
+        return new MySQLCharacterSet(MySQLCharacterSet::UTF8MB3);
       case self::VARCHAR_MB4:
       case self::TEXT_MB4:
       case self::MEDIUMTEXT_MB4:

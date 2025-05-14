@@ -26,7 +26,7 @@ class MySQLCharacterSet extends AbstractEnum
   CONST GBK = 'gbk';
   CONST LATIN5 = 'latin5';
   CONST ARMSCII8 = 'armscii8';
-  CONST UTF8 = 'utf8';
+  CONST UTF8MB3 = 'utf8mb3';
   CONST UCS2 = 'ucs2';
   CONST CP866 = 'cp866';
   CONST KEYBCS2 = 'keybcs2';
@@ -93,7 +93,7 @@ class MySQLCharacterSet extends AbstractEnum
         return 'ISO 8859-9 Turkish';
       case self::ARMSCII8:
         return 'ARMSCII-8 Armenian';
-      case self::UTF8:
+      case self::UTF8MB3:
         return 'UTF-8 Unicode';
       case self::UCS2:
         return 'UCS-2 Unicode';
@@ -183,8 +183,8 @@ class MySQLCharacterSet extends AbstractEnum
         return new MySQLCollation(MySQLCollation::LATIN5_TURKISH_CI);
       case self::ARMSCII8:
         return new MySQLCollation(MySQLCollation::ARMSCII8_GENERAL_CI);
-      case self::UTF8:
-        return new MySQLCollation(MySQLCollation::UTF8_GENERAL_CI);
+      case self::UTF8MB3:
+        return new MySQLCollation(MySQLCollation::UTF8MB3_GENERAL_CI);
       case self::UCS2:
         return new MySQLCollation(MySQLCollation::UCS2_GENERAL_CI);
       case self::CP866:

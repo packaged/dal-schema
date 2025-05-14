@@ -59,33 +59,36 @@ class MySQLCollation extends AbstractEnum
   const LATIN5_BIN = 'latin5_bin';
   const ARMSCII8_GENERAL_CI = 'armscii8_general_ci';
   const ARMSCII8_BIN = 'armscii8_bin';
-  const UTF8_GENERAL_CI = 'utf8_general_ci';
-  const UTF8_BIN = 'utf8_bin';
-  const UTF8_UNICODE_CI = 'utf8_unicode_ci';
-  const UTF8_ICELANDIC_CI = 'utf8_icelandic_ci';
-  const UTF8_LATVIAN_CI = 'utf8_latvian_ci';
-  const UTF8_ROMANIAN_CI = 'utf8_romanian_ci';
-  const UTF8_SLOVENIAN_CI = 'utf8_slovenian_ci';
-  const UTF8_POLISH_CI = 'utf8_polish_ci';
-  const UTF8_ESTONIAN_CI = 'utf8_estonian_ci';
-  const UTF8_SPANISH_CI = 'utf8_spanish_ci';
-  const UTF8_SWEDISH_CI = 'utf8_swedish_ci';
-  const UTF8_TURKISH_CI = 'utf8_turkish_ci';
-  const UTF8_CZECH_CI = 'utf8_czech_ci';
-  const UTF8_DANISH_CI = 'utf8_danish_ci';
-  const UTF8_LITHUANIAN_CI = 'utf8_lithuanian_ci';
-  const UTF8_SLOVAK_CI = 'utf8_slovak_ci';
-  const UTF8_SPANISH2_CI = 'utf8_spanish2_ci';
-  const UTF8_ROMAN_CI = 'utf8_roman_ci';
-  const UTF8_PERSIAN_CI = 'utf8_persian_ci';
-  const UTF8_ESPERANTO_CI = 'utf8_esperanto_ci';
-  const UTF8_HUNGARIAN_CI = 'utf8_hungarian_ci';
-  const UTF8_SINHALA_CI = 'utf8_sinhala_ci';
-  const UTF8_GERMAN2_CI = 'utf8_german2_ci';
-  const UTF8_CROATIAN_CI = 'utf8_croatian_ci';
-  const UTF8_UNICODE_520_CI = 'utf8_unicode_520_ci';
-  const UTF8_VIETNAMESE_CI = 'utf8_vietnamese_ci';
-  const UTF8_GENERAL_MYSQL500_CI = 'utf8_general_mysql500_ci';
+  const UTF8_BIN = 'utf8mb3_bin';
+  const UTF8_GENERAL_CI = 'utf8mb3_general_ci';
+  const UTF8_UNICODE_CI = 'utf8mb3_unicode_ci';
+  const UTF8_ICELANDIC_CI = 'utf8mb3_icelandic_ci';
+  const UTF8_LATVIAN_CI = 'utf8mb3_latvian_ci';
+  const UTF8_ROMANIAN_CI = 'utf8mb3_romanian_ci';
+  const UTF8_SLOVENIAN_CI = 'utf8mb3_slovenian_ci';
+  const UTF8_POLISH_CI = 'utf8mb3_polish_ci';
+  const UTF8_ESTONIAN_CI = 'utf8mb3_estonian_ci';
+  const UTF8_SPANISH_CI = 'utf8mb3_spanish_ci';
+  const UTF8_SWEDISH_CI = 'utf8mb3_swedish_ci';
+  const UTF8_TURKISH_CI = 'utf8mb3_turkish_ci';
+  const UTF8_CZECH_CI = 'utf8mb3_czech_ci';
+  const UTF8_DANISH_CI = 'utf8mb3_danish_ci';
+  const UTF8_LITHUANIAN_CI = 'utf8mb3_lithuanian_ci';
+  const UTF8_SLOVAK_CI = 'utf8mb3_slovak_ci';
+  const UTF8_SPANISH2_CI = 'utf8mb3_spanish2_ci';
+  const UTF8_ROMAN_CI = 'utf8mb3_roman_ci';
+  const UTF8_PERSIAN_CI = 'utf8mb3_persian_ci';
+  const UTF8_ESPERANTO_CI = 'utf8mb3_esperanto_ci';
+  const UTF8_HUNGARIAN_CI = 'utf8mb3_hungarian_ci';
+  const UTF8_SINHALA_CI = 'utf8mb3_sinhala_ci';
+  const UTF8_GERMAN2_CI = 'utf8mb3_german2_ci';
+  const UTF8_CROATIAN_CI = 'utf8mb3_croatian_ci';
+  const UTF8_UNICODE_520_CI = 'utf8mb3_unicode_520_ci';
+  const UTF8_VIETNAMESE_CI = 'utf8mb3_vietnamese_ci';
+  const UTF8_GENERAL_MYSQL500_CI = 'utf8mb3_general_mysql500_ci';
+  const UTF8MB3_BIN = 'utf8mb3_bin';
+  const UTF8MB3_GENERAL_CI = 'utf8mb3_general_ci';
+  const UTF8MB3_UNICODE_CI = 'utf8mb3_unicode_ci';
   const UCS2_GENERAL_CI = 'ucs2_general_ci';
   const UCS2_BIN = 'ucs2_bin';
   const UCS2_UNICODE_CI = 'ucs2_unicode_ci';
@@ -334,7 +337,7 @@ class MySQLCollation extends AbstractEnum
       case self::UTF8_UNICODE_520_CI:
       case self::UTF8_VIETNAMESE_CI:
       case self::UTF8_GENERAL_MYSQL500_CI:
-        return new MySQLCharacterSet(MySQLCharacterSet::UTF8);
+        return new MySQLCharacterSet(MySQLCharacterSet::UTF8MB3);
       case self::UCS2_GENERAL_CI:
       case self::UCS2_BIN:
       case self::UCS2_UNICODE_CI:
