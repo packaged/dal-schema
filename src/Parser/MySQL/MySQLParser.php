@@ -130,7 +130,14 @@ class MySQLParser extends AbstractParser
     }
 
     $table->setCollation(new MySQLCollation($schemaResults[0]['TABLE_COLLATION']));
-    $table->setCharacterSet(new MySQLCharacterSet($schemaResults[0]['character_set_name']));
+    if(array_key_exists('character_set_name', $schemaResults[0]))
+    {
+      $table->setCollation(new MySQLCollation($schemaResults[0]['character_set_name']));
+    }
+    else
+    {
+      $table->setCollation(new MySQLCollation($schemaResults[0]['CHARACTER_SET_NAME']));
+    }
 
     return $table;
   }

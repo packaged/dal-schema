@@ -59,8 +59,8 @@ class MySQLCollation extends AbstractEnum
   const LATIN5_BIN = 'latin5_bin';
   const ARMSCII8_GENERAL_CI = 'armscii8_general_ci';
   const ARMSCII8_BIN = 'armscii8_bin';
-  const UTF8_GENERAL_CI = 'utf8_general_ci';
   const UTF8_BIN = 'utf8_bin';
+  const UTF8_GENERAL_CI = 'utf8_general_ci';
   const UTF8_UNICODE_CI = 'utf8_unicode_ci';
   const UTF8_ICELANDIC_CI = 'utf8_icelandic_ci';
   const UTF8_LATVIAN_CI = 'utf8_latvian_ci';
@@ -86,6 +86,9 @@ class MySQLCollation extends AbstractEnum
   const UTF8_UNICODE_520_CI = 'utf8_unicode_520_ci';
   const UTF8_VIETNAMESE_CI = 'utf8_vietnamese_ci';
   const UTF8_GENERAL_MYSQL500_CI = 'utf8_general_mysql500_ci';
+  const UTF8MB3_BIN = 'utf8mb3_bin';
+  const UTF8MB3_GENERAL_CI = 'utf8mb3_general_ci';
+  const UTF8MB3_UNICODE_CI = 'utf8mb3_unicode_ci';
   const UCS2_GENERAL_CI = 'ucs2_general_ci';
   const UCS2_BIN = 'ucs2_bin';
   const UCS2_UNICODE_CI = 'ucs2_unicode_ci';
@@ -128,6 +131,7 @@ class MySQLCollation extends AbstractEnum
   const LATIN7_GENERAL_CS = 'latin7_general_cs';
   const LATIN7_BIN = 'latin7_bin';
   const UTF8MB4_GENERAL_CI = 'utf8mb4_general_ci';
+  const UTF8MB4 = 'utf8mb4';
   const UTF8MB4_BIN = 'utf8mb4_bin';
   const UTF8MB4_UNICODE_CI = 'utf8mb4_unicode_ci';
   const UTF8MB4_ICELANDIC_CI = 'utf8mb4_icelandic_ci';
@@ -227,6 +231,7 @@ class MySQLCollation extends AbstractEnum
   const GB18030_CHINESE_CI = 'gb18030_chinese_ci';
   const GB18030_BIN = 'gb18030_bin';
   const GB18030_UNICODE_520_CI = 'gb18030_unicode_520_ci';
+  const UTF8MB4_0900_AI_CI = "utf8mb4_0900_ai_ci";
 
   public function getChatacterSet(): ?MySQLCharacterSet
   {
@@ -335,6 +340,10 @@ class MySQLCollation extends AbstractEnum
       case self::UTF8_VIETNAMESE_CI:
       case self::UTF8_GENERAL_MYSQL500_CI:
         return new MySQLCharacterSet(MySQLCharacterSet::UTF8);
+      case self::UTF8MB3_BIN:
+      case self::UTF8MB3_GENERAL_CI:
+      case self::UTF8MB3_UNICODE_CI:
+        return new MySQLCharacterSet(MySQLCharacterSet::UTF8MB3);
       case self::UCS2_GENERAL_CI:
       case self::UCS2_BIN:
       case self::UCS2_UNICODE_CI:
@@ -384,6 +393,7 @@ class MySQLCollation extends AbstractEnum
       case self::LATIN7_BIN:
         return new MySQLCharacterSet(MySQLCharacterSet::LATIN7);
       case self::UTF8MB4_GENERAL_CI:
+      case self::UTF8MB4:
       case self::UTF8MB4_BIN:
       case self::UTF8MB4_UNICODE_CI:
       case self::UTF8MB4_ICELANDIC_CI:
@@ -409,6 +419,7 @@ class MySQLCollation extends AbstractEnum
       case self::UTF8MB4_CROATIAN_CI:
       case self::UTF8MB4_UNICODE_520_CI:
       case self::UTF8MB4_VIETNAMESE_CI:
+      case self::UTF8MB4_0900_AI_CI:
         return new MySQLCharacterSet(MySQLCharacterSet::UTF8MB4);
       case self::CP1251_BULGARIAN_CI:
       case self::CP1251_UKRAINIAN_CI:
